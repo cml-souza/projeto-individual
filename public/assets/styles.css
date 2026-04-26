@@ -6,6 +6,9 @@ body {
     background-color: #eee;
 }
 
+.container {
+    margin: 0;
+}
 
 .header {
     background-color: #c5a9c9;
@@ -449,7 +452,7 @@ body {
 
 .footer {
     background-color: #c5a9c99a;
-    width: 100%;
+    max-width: 100%;
     padding: 20px;
 }
 
