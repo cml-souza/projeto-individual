@@ -38,7 +38,7 @@ body {
 
 .btn-start {
     display: flex;
-    gap: 30px;
+    gap: 5vw;
 }
 
 .btn-start button {
@@ -53,6 +53,15 @@ body {
     color: #8d5682;
     box-shadow: 0px 2px 6px #58075e2d;
     cursor: pointer;
+    transition: transform 2s ease;
+}
+
+.btn-start button:hover {
+    transform: scale(1.05);
+    box-shadow: 8px 6px 6px #58075e2d;
+    border: 1px solid #8d5682;
+    background-color: #eee;
+    color: #8d5682;
 }
 
 .top-box {
@@ -61,6 +70,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-left: 30px;
 }
 
 .content-box h1 {
@@ -151,6 +161,7 @@ body {
 
 .grid-imagens img:hover {
     transform: scale(1.05);
+    box-shadow: 4px 4px 6px #58075e15;
 }
 
 .content-p {
@@ -174,7 +185,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     font-size: 48px;
-    margin-top: 20vh;
+    margin-top: 100px;
 }
 
 .header-p,
@@ -188,7 +199,7 @@ body {
 .box-cards {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-top: 20px;
     margin-left: 40px;
     margin-right: 40px;
@@ -205,6 +216,7 @@ body {
 
 .card:hover {
     transform: scale(1.05);
+    box-shadow: 6px 4px 6px #58075e15;
 }
 
 .card-icon {
@@ -235,7 +247,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
 .creator-msg h2 {
@@ -283,13 +294,13 @@ body {
     color: #5a3e5c;
     border-radius: 20px;
     box-shadow: 0px 2px 6px #58075e2d;
-    ;
     font-size: 14px;
     cursor: pointer;
 }
 
 .msg-text span {
     font-weight: 500;
+    line-height: 2rem;
 }
 
 .msg-photo img {
@@ -304,7 +315,7 @@ body {
 }
 
 .content-ch {
-    height: 70vh;
+    height: 100vh;
     display: flex;
     justify-content: space-around;
 }
@@ -314,7 +325,7 @@ body {
     flex-direction: column;
     align-items: center;
     margin-top: 10vh;
-    width: 50%;
+    width: 60%;
     text-align: center;
 }
 
@@ -343,15 +354,16 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: #5a3e5c;
     width: 300px;
+    line-height: 2rem;
 }
 
 .form-box {
     background-color: #c5a9c99a;
-    width: 400px;
+    width: 40%;
     height: 500px;
-    border-radius: 20px;
+    border-radius: 50px;
     padding: 50px;
-    margin-right: 25px;
+    margin-right: 45px;
 }
 
 .form {
@@ -368,12 +380,22 @@ body {
     color: #eee;
     text-align: center;
     font-size: 32px;
+    line-height: 2rem;
 }
 
-.top-form span {
+.appeal-f button {
+    font-family: Arial, Helvetica, sans-serif;
     color: #5a3e5cd6;
     font-weight: bold;
     font-style: italic;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    border: solid 1px #5a3e5cda;
+    background-color: #58075e2d;
+    border-radius: 20px;
+    box-shadow: 0px 2px 6px #58075e2d;
     font-size: 14px;
 }
 
@@ -413,35 +435,34 @@ body {
     font-size: 16px;
     width: 10rem;
     height: 3rem;
-    margin-top: 10px;
+    margin-top: 15px;
+    transition: transform 2s ease;
 }
 
-.content-ctt {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 20vh;
-    margin-top: 50vh;
-}
-
-.ctt-info h3 {
-    font-family: 'Italiana';
-    font-size: 20px;
-    text-shadow: 0px 5px 6px #b59ab8;
-}
-
-.ctt-info {
-    display: flex;
-    flex-direction: column;
-    line-height: 2rem;
-    color: #5a3e5cc9;
+.form-button button:hover {
+    border: 1px solid #5a3e5c;
+    background-color: #58075e2d;
+    color: #5a3e5c;
+    box-shadow: 0px 2px 6px #58075e2d;
+    transform: scale(1.05);
 }
 
 .footer {
-    flex-direction: row;
     background-color: #c5a9c99a;
     width: 100%;
+    padding: 20px;
+}
+
+.footer h3 {
+    font-family: 'Italiana';
+    font-size: 20px;
+    text-shadow: 0px 5px 6px #b59ab8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 2rem;
+    color: #5a3e5cc9;
 }
 
 .content-f img {
@@ -451,8 +472,10 @@ body {
 
 .content-f {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     margin-top: 10px;
+    align-items: center;
 }
 
 .marca {
@@ -461,6 +484,10 @@ body {
     justify-content: center;
     font-family: 'Urbanist';
     color: #8d5682;
+}
+
+.marca h2 {
+    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .d-contato {
@@ -492,6 +519,10 @@ a {
     text-decoration: none;
 }
 
+.quick-access a:hover {
+    color: #0000006d;
+}
+
 .quick-access li {
     line-height: 2rem;
 }
@@ -520,4 +551,10 @@ a {
 
 .redes {
     display: block;
+    transition: transform 0.2s ease;
+    margin-top: 5px;
+}
+
+.redes img:hover {
+    transform: scale(1.25);
 }
