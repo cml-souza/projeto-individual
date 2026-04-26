@@ -12,33 +12,47 @@ body {
     border-radius: 0 0 20px 20px;
 }
 
+.nav-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.logo h1 {
+    font-family: 'Urbanist';
+    font-size: 44px;
+    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    color: #8d5682;
+}
+
+.logo img {
+    width: 64px;
+}
+
 .logo {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.nav-bar ul {
+.btn-start {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 25px;
-    padding-bottom: 30px;
+    gap: 30px;
 }
 
-.nav-bar li,
-a {
-    text-decoration: none;
-    list-style: none;
-    color: #eee;
-    opacity: 85%;
+.btn-start button {
+    border: none;
+    border-radius: 50px;
+    width: 10rem;
+    height: 2.5rem;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-}
-
-.nav-bar a.active {
-    border-bottom: 2px solid #eeeeee96;
+    font-size: 18px;
+    font-weight: 550;
+    background-color: #eee;
+    color: #8d5682;
+    box-shadow: 0px 2px 6px #58075e2d;
+    cursor: pointer;
 }
 
 .top-box {
@@ -110,26 +124,6 @@ a {
     cursor: pointer;
 }
 
-.home-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 30px;
-    margin-bottom: 20px;
-
-}
-
-.home-buttons button {
-    background-color: #97658e;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    border: none;
-    color: white;
-    border-radius: 20px;
-    height: 3rem;
-    width: 8rem;
-}
-
 .content-box {
     display: flex;
     align-items: center;
@@ -183,7 +177,8 @@ a {
     margin-top: 20vh;
 }
 
-.header-p, .card span {
+.header-p,
+.card span {
     color: #8d5682;
     font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
@@ -233,14 +228,14 @@ a {
 .msg {
     background-color: #eee;
     font-family: Arial, Helvetica, sans-serif;
-    color: #af364b;
+    color: #5a3e5c;
     height: 90vh;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .creator-msg h2 {
@@ -256,7 +251,7 @@ a {
 
 .msg-box {
     background-color: #d6e7f7;
-    width: 70%;
+    width: 70vw;
     height: 480px;
     display: flex;
     justify-content: space-around;
@@ -267,6 +262,7 @@ a {
 }
 
 .msg-text {
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -281,12 +277,12 @@ a {
     margin-right: 40px;
 }
 
-.appeal-msg button{
-    border: #af364b solid 1px;
-    background-color: #af364a59;
-    color: #af364b;
+.appeal-msg button {
+    border: solid 1px #5a3e5cda;
+    background-color: #58075e2d;
+    color: #5a3e5c;
     border-radius: 20px;
-    box-shadow: 0px 2px 6px #af364a59;
+    box-shadow: 0px 2px 6px #58075e2d;;
     font-size: 14px;
     cursor: pointer;
 }
@@ -295,9 +291,10 @@ a {
     font-weight: 500;
 }
 
-.msg-box img {
-    width: 300px;
-    height: 300px;
+.msg-photo img {
+    width: 250px;
+    height: 250px;
+    padding: 20px;
     border-radius: 50%;
     object-fit: cover;
     display: flex;
@@ -318,6 +315,13 @@ a {
     margin-top: 10vh;
     width: 50%;
     text-align: center;
+}
+
+.text-ch h3 {
+    color: #8d5682a8;
+    font-weight: 600;
+    font-family: 'Urbanist';
+    font-size: 32px;
 }
 
 .text-ch h2 {
@@ -346,6 +350,7 @@ a {
     height: 500px;
     border-radius: 20px;
     padding: 50px;
+    margin-right: 25px;
 }
 
 .form {
@@ -365,13 +370,13 @@ a {
 }
 
 .top-form span {
-    color: #5a3e5c;
+    color: #5a3e5cd6;
     font-weight: bold;
     font-style: italic;
     font-size: 14px;
 }
 
-.ipt-form input{
+.ipt-form input {
     border: none;
     border-radius: 20px;
     width: 30vw;
@@ -382,7 +387,7 @@ a {
     margin-bottom: 10px;
 }
 
-.txt-form textarea{
+.txt-form textarea {
     border: none;
     border-radius: 20px;
     width: 30vw;
@@ -399,8 +404,8 @@ a {
     align-items: center;
 }
 
-.form-button button{
-    background-color: #c08ac4;
+.form-button button {
+    background-color: #5a3e5cd6;
     border: none;
     border-radius: 15px;
     color: #eee;
@@ -408,4 +413,110 @@ a {
     width: 10rem;
     height: 3rem;
     margin-top: 10px;
+}
+
+.content-ctt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 20vh;
+    margin-top: 50vh;
+}
+
+.ctt-info h3 {
+    font-family: 'Italiana';
+    font-size: 20px;
+    text-shadow: 0px 5px 6px #b59ab8;
+}
+
+.ctt-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 2rem;
+    color: #5a3e5cc9;
+}
+
+.footer {
+    flex-direction: row;
+    background-color: #c5a9c99a;
+    width: 100%;
+}
+
+.content-f img {
+    width: 50px;
+    height: 50px;
+}
+
+.content-f {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Urbanist';
+    color: #8d5682;
+}
+
+.d-contato {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0000009e;
+    font-weight: 550;
+    line-height: 2rem;
+}
+
+.d-contato span:first-of-type {
+    font-size: 20px;
+}
+
+.quick-access span {
+    text-align: center;
+    line-height: 2rem;
+}
+
+.quick-access span,
+a {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0000009e;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.quick-access li {
+    line-height: 2rem;
+}
+
+.quick-access ul {
+    text-decoration: none;
+    list-style: none;
+}
+
+.c-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+.connect {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0000009e;
+    font-weight: 550;
+    font-size: 16px;
+}
+
+
+.redes {
+    display: block;
 }
