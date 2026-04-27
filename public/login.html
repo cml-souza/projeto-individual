@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles-c.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="content-c">
+            <div class="cabecalho">
+                <div class="logo">
+                    <h1>Cherish.</h1><img src="assets/img/logo/logo-def.png" alt="logo">
+                </div>
+                <div class="cabecalho-sub">
+                    <span>Não tem uma conta? <a href="cadastro.html">Cadastre-se!</a></span>
+                </div>
+            </div>
+            <div class="container-form">
+                <div class="box-c">
+                <h3>Login</h3>
+                <div class="form-c">
+
+                    <div class="input-c">
+                        <input type="text" id="ipt_email" placeholder="E-mail">
+                    </div>
+
+                    <div class="input-c">
+                        <input type="password" id="ipt_senha" placeholder="Senha">
+                    </div>
+
+
+                    <div class="c-button">
+                        <button onclick="logar()">Entrar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="exibir"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    function logar() {
+        let email = ipt_email.value;
+        let senhaInserida = ipt_senha.value;
+        let emailCorreto = "brandao@gmail.com";
+        let senhaCorreta = "1234";
+
+        let mensagem = "";
+
+        if (email == emailCorreto &&
+            senhaInserida == senhaCorreta) {
+            mensagem = `<p class="exibir sucesso">Login confirmado!</p>`;
+            exibir.innerHTML = mensagem;
+            setTimeout(() => {
+                window.location.href = "galeria.html";
+            }, 1000);
+        } else {
+            mensagem = `<p class="exibir erro">Senha e/ou Email inválidos.</p>`;
+            exibir.innerHTML = mensagem;
+        }
+    }
+</script>

@@ -1,0 +1,34 @@
+USE cherish_db;
+
+CREATE TABLE usuario(
+id INT PRIMARY KEY AUTO_INCREMENT,
+usuario_nome VARCHAR(125) NOT NULL,
+usuario_email VARCHAR(255) UNIQUE NOT NULL,
+usuario_senha VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE musica(
+id INT PRIMARY KEY AUTO_INCREMENT,
+titulo VARCHAR(255),
+artista VARCHAR(255),
+url VARCHAR(255)
+);
+
+CREATE TABLE memoria(
+id INT PRIMARY KEY AUTO_INCREMENT,
+titulo VARCHAR(125),
+descricao VARCHAR(255),
+data_memoria DATE,
+data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+usuario_id INT,
+CONSTRAINT chUserID FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+musica_id INT,
+CONSTRAINT chMsc FOREIGN KEY (musica_id) REFERENCES musica(id)
+);
+
+CREATE TABLE imagem(
+id INT PRIMARY KEY AUTO_INCREMENT,
+url VARCHAR(255),
+memoria_id INT,
+CONSTRAINT chMemo FOREIGN KEY (memoria_id) REFERENCES memoria(id)
+);

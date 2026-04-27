@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Cadastro</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles-c.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="content-c">
+            <div class="cabecalho">
+                <div class="logo">
+                    <h1>Cherish.</h1><img src="assets/img/logo/logo-def.png" alt="logo">
+                </div>
+                <div class="cabecalho-sub">
+                    <span>Já tem uma conta? <a href="login.html">Clique Aqui!</a></span>
+                </div>
+            </div>
+            <div class="container-form">
+                <div class="box-c">
+                    <h3>Cadastro</h3>
+                    <div class="form-c">
+                        <div class="input-c">
+                            <input type="text" id="ipt_nome" placeholder="Nome">
+                        </div>
+                        <div class="input-c">
+                            <input type="text" id="ipt_email" placeholder="E-mail">
+                        </div>
+                        <div class="input-c">
+                            <input type="password" id="ipt_senha" placeholder="Senha">
+                        </div>
+                        <div class="input-c">
+                            <input type="password" id="ipt_conf_senha" placeholder="Confirme sua senha">
+                        </div>
+                        <div class="c-button">
+                            <button onclick="cadastrar()">Cadastrar</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="exibir"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+
+    function cadastrar() {
+        let nome = ipt_nome.value;
+        let email = ipt_email.value;
+        let senha = ipt_senha.value;
+        let confSenha = ipt_conf_senha.value;
+
+        let mensagem = ``;
+
+        if (nome == "" || nome == null ||
+            email == "" || email == null ||
+            senha == "" || senha == null ||
+            confSenha == "" || confSenha == null) {
+            mensagem = `<p class="exibir erro">Por favor, preencha todos os campos</p>`
+        } else if (!email.includes('.com') || !email.includes('@')) {
+            mensagem = `<p class="exibir erro">Verifique se o email contém ".com" e "@"</p>`
+        } else if (confSenha != senha){
+            mensagem = `<p class="exibir erro">Os campos de senha devem ser iguais.</p>`
+        } else {
+            mensagem = `<p class="exibir sucesso">Cadastro Realizado! <br>
+                Redirecionando...</p>`
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1000);
+        }
+        exibir.innerHTML = mensagem;
+    }
+</script>

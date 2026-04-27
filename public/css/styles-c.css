@@ -1,0 +1,135 @@
+body {
+    background-color: #bfa2ce;
+}
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    flex-direction: row;
+}
+
+.cabecalho h1 {
+    font-family: 'Urbanist';
+    font-size: 60px;
+    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    color: #8d5682;
+}
+
+.cabecalho img {
+    width: 64px;
+}
+
+.cabecalho-sub span {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: #5a3e5cc9;
+    font-weight: 550px;
+}
+
+.cabecalho-sub a {
+    text-decoration: underline;
+}
+
+.cabecalho-sub a:hover {
+    color: #0000006d;
+}
+
+.container-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+}
+
+.content-c {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+}
+
+.box-c {
+    background-color: #cfb8db;
+    border-radius: 20px;
+    width: 50vw;
+    height: 400px;
+    padding: 40px 0px 70px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 6px #58075e2d;
+}
+
+.box-c h3 {
+    font-family: 'Urbanist';
+    color: #eee;
+    font-size: 40px;
+}
+
+.input-c input {
+    margin-bottom: 25px;
+    color: #5a3e5cc9;
+    border: none;
+    background-color: #eee;
+    width: 20rem;
+    height: 3rem;
+    border-radius: 50px;
+    padding: 0 15px 0 15px;
+    font-size: 16px;
+}
+
+.c-button {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+}
+
+.c-button button {
+    font-family: Arial, Helvetica, sans-serif;
+    border: none;
+    background-color: #eee;
+    color: #8d5682;
+    width: 15rem;
+    height: 3rem;
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px #58075e2d;
+    font-size: 16px;
+    font-weight: 550;
+}
+
+.c-button button:hover {
+    transform: scale(1.05);
+    background-color: #eee;
+    color: #8d5682;
+    border: 1px solid #8d5682;
+    box-shadow: 0px 10px 6px #58075e2d;
+}
+
+.exibir {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 250px;
+    min-height: 60px;
+    margin: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.sucesso {
+    background-color: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+}
+
+.erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+}
