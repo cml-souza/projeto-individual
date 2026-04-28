@@ -480,6 +480,20 @@ body {
     align-items: center;
 }
 
+.copyright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Italiana';
+    font-weight: 600;
+    color: #5a3e5c;
+    text-shadow: 0px 5px 6px #b59ab8;
+}
+
+.logo-c {
+    font-family: 'Urbanist';
+}
+
 .marca {
     display: flex;
     align-items: center;
@@ -513,7 +527,7 @@ body {
 }
 
 .quick-access span,
-a {
+.quick-access a {
     font-family: Arial, Helvetica, sans-serif;
     color: #0000009e;
     font-size: 18px;
@@ -555,6 +569,11 @@ a {
     display: block;
     transition: transform 0.2s ease;
     margin-top: 5px;
+    text-decoration: none;
+}
+
+.redes a {
+    text-decoration: none;
 }
 
 .redes img:hover {

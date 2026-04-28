@@ -31,12 +31,26 @@ body {
     font-weight: 550px;
 }
 
+.cabecalho-sub span:last-of-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 .cabecalho-sub a {
     text-decoration: underline;
+    color: #5a3e5cc9;
+    font-weight: 550;
+    margin-top: 10px;
+}
+
+.cabecalho-sub span:last-of-type{
+    font-size: 15px;
 }
 
 .cabecalho-sub a:hover {
-    color: #0000006d;
+    color: #8d5682;
 }
 
 .container-form {
