@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria Pessoal</title>
+    <link rel="stylesheet" href="css/styles-g.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Momentos</h1>
+            <div class="nav">
+                <ul class="nav-content">
+                    <li>Favoritos</li>
+                    <li>Sair</li>
+                </ul>
+            </div>
+            <div class="btn-adicionar">
+                <button id="btnAdd-m">+ Adicionar Momento</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div id="galeria" class="galeria"></div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Novo Momento</h2>
+
+            <div id="alerta" class="exibir"></div>
+
+            <input type="text" id="titulo" placeholder="Título">
+
+            <input type="file" id="imagem" accept="image/*">
+
+            <textarea id="descricao" placeholder="Descrição"></textarea>
+
+            <label>
+                Favoritar ⭐
+                <input type="checkbox" id="favoritar">
+            </label>
+
+            <div class="modal-buttons">
+                <button id="save">Salvar</button>
+                <button id="cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const btn = document.getElementById("btnAdd-m");
+    const modal = document.getElementById("modal");
+
+    const salvar = document.getElementById("save");
+    const cancelar = document.getElementById("cancel");
+
+    const galeria = document.getElementById("galeria");
+
+    // Abrir Modal
+    btn.onclick = () => {
+        modal.style.display = "flex";
+
+        const alerta = document.getElementById("alerta");
+        alerta.style.display = "none";
+    }
+
+    // Fechar Modal
+    cancelar.onclick = () => {
+        modal.style.display = "none";
+    }
+
+    // Mostrar Alerta 
+    function mostrarAlerta(texto, tipo){
+        const alerta = document.getElementById("alerta");
+
+        alerta.innerText = texto;
+        alerta.classList.remove("sucesso", "erro");
+        alerta.classList.add(tipo);
+
+        alerta.style.display = "flex";
+        
+        // Limpando Alerta
+        setTimeout(() => {
+            alerta.style.display = "none";
+        }, 3000);
+    }
+
+    // Criar Card Momento
+    function criarCard(titulo, imagem, descricao, favoritar){
+        return `
+        <div class="card">
+            <span style="margin-top:10px;">${titulo}</span>
+            <br>
+            <img src="${imagem}">
+            <p style="padding: 0 10px;">${descricao}</p>
+            ${favoritar ?"<p style='color: gold; text-align: center;'>Favoritar ⭐</p>" : ""}    
+        </div>
+        `;
+    }
+
+    // Salvar Momento
+    salvar.onclick = () => {
+        const titulo = document.getElementById("titulo").value;
+        const imagem = document.getElementById("imagem");
+        const descricao = document.getElementById("descricao").value;
+        const favoritar = document.getElementById("favoritar").checked;
+
+        const arquivo = imagem.files[0];
+
+        // Validando preenchimento de campos
+        if (!titulo || !arquivo){
+            mostrarAlerta("Atribua um título e uma imagem!", "erro");
+            return;
+        }
+
+        // Criando uma URL para a imagem
+        const imagemURL = URL.createObjectURL(arquivo);
+
+        // Retornando o card completo
+        galeria.innerHTML += criarCard(titulo, imagemURL, descricao, favoritar);
+
+        mostrarAlerta("Momento registrado com sucesso!", "sucesso");
+
+        // Limpando Registros
+        document.getElementById("titulo").value = "";
+        imagem.value = "";
+        document.getElementById("descricao").value = "";
+        document.getElementById("favoritar").checked = false;
+
+        setTimeout(() => {
+            modal.style.display = "none";
+        }, 2500);
+    };
+
+</script>
+</body>
+</html>

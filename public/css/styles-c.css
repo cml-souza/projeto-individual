@@ -42,7 +42,6 @@ body {
     text-decoration: underline;
     color: #5a3e5cc9;
     font-weight: 550;
-    margin-top: 10px;
 }
 
 .cabecalho-sub span:last-of-type{
@@ -146,4 +145,22 @@ body {
     background-color: #f8d7da;
     color: #721c24;
     border: 2px solid #f5c6cb;
+}
+
+.rec-senha {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}
+
+.rec-senha a {
+    margin-top: 20px;
+    color: #5a3e5cc9;
+    font-weight: 550;
+    transition: tranform 5s ease;
+}
+
+.rec-senha a:hover {
+    transform: scale(1.05);
+    color: #8d5682;
 }
