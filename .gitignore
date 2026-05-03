@@ -1,0 +1,9 @@
+# dependências
+node_modules/
+
+# variáveis de ambiente (senhas)
+.env
+.env.dev
+
+# uploads (imagens dos usuários)
+public/uploads/

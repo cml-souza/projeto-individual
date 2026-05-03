@@ -103,8 +103,33 @@
         `;
     }
 
+    async function carregarMomento() {
+        try {
+            const resposta = await fetch("/momentos/listar");
+            const momentos = await resposta.json();
+
+            const galeria = document.getElementById("galeria");
+            galeria.innerHTML = "";
+
+            momentos.forEach(m => {
+                galeria.innerHTML += criarCard(
+                    m.titulo,
+                    `/uploads/${m.imagem}`,
+                    m.descricao,
+                    m.favoritar == 1
+                );
+            });
+            
+        }
+        catch (erro) {
+                console.log("Erro ao carregar momentos: ", erro)
+            }
+    }
+
+    window.onload = carregarMomento;
+
     // Salvar Momento
-    salvar.onclick = () => {
+    salvar.onclick = async () => {
         const titulo = document.getElementById("titulo").value;
         const imagem = document.getElementById("imagem");
         const descricao = document.getElementById("descricao").value;
@@ -118,23 +143,30 @@
             return;
         }
 
-        // Criando uma URL para a imagem
-        const imagemURL = URL.createObjectURL(arquivo);
+        // Preparando dados
+        const formData = new formData();
+        formData.append("titulo", titulo);
+        formData.append("imagem", arquivo);
+        formData.append("descricao", descricao);
+        formData.append("favoritar", favoritar ? 1 : 0);
 
-        // Retornando o card completo
-        galeria.innerHTML += criarCard(titulo, imagemURL, descricao, favoritar);
+        try {
+            const resposta = await fetch("/momentos/cadastrar", {
+                method: "POST",
+                body:modalData
+            });
+            
+            const dados = await resposta.json();
 
-        mostrarAlerta("Momento registrado com sucesso!", "sucesso");
+            mostrarAlerta(dados.alerta, "sucesso");
 
-        // Limpando Registros
-        document.getElementById("titulo").value = "";
-        imagem.value = "";
-        document.getElementById("descricao").value = "";
-        document.getElementById("favoritar").checked = false;
+            // Recarregar Momentos
+            carregarMomento();
 
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 2500);
+        // Tratando erro
+        } catch (erro) {
+            mostrarAlerta("Erro ao enviar para API", "erro")
+        }
     };
 
 </script>
