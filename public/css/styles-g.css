@@ -3,52 +3,91 @@
 
 body {
     margin: 0;
-    background-color: #eee;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
     width: 100%;
-}
-
-/* HEADER */
-.header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 30px;
 }
 
-.header h1 {
-    font-family: 'Urbanist';
-    color: #8d5682;
-}
-
-/* NAV */
-
-.nav-content {
+.content-h {
     display: flex;
-    flex-direction: row;
-    gap: 50px;
-    list-style: none;
-    font-size: 20px;
-    font-weight: 550;
-}
-
-/* BOTÃO */
-.btn-adicionar button {
+    flex-direction: column;
+    justify-content: center;
     background-color: #8d5682;
-    color: #eee;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    width: 25%;
+    height: 100vh;
+    padding: 20px;
+}
+
+.nav-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-side h2 {
+    font-family: 'Urbanist';
+    font-size: 40px;
+    color: white;
+    margin-bottom: 20px;
+    transition: transform 2s ease;
+}
+
+.nav-side h2:hover {
+    transform: scale(1.05);
+}
+
+.nav-side a {
+    text-decoration: none;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    width: 120px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+.nav-side a h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.nav-side a:hover {
+    background-color: rgba(255, 255, 255, 0.358);
+}
+
+.main-content {
+    flex: 1;
+    padding: 50px;
+}
+
+.btn-adicionar button {
+    background-color: #eeeeee;
+    color: #8d5682;
     border: none;
+    font-size: 16px;
+    font-weight: 550;
     border-radius: 20px;
     width: 12rem;
     height: 2.5rem;
     cursor: pointer;
+    margin-top: 30px;
     transition: 0.2s;
 }
 
 .btn-adicionar button:hover {
     transform: scale(1.05);
+    background-color: #ffffff5b;
+    color: #5a3e5c;
 }
 
 /* GALERIA */
@@ -89,6 +128,7 @@ body {
 /* MODAL */
 
 .modal {
+    font-family: Arial, Helvetica, sans-serif;
     display: none;
     position: fixed;
     top: 0;

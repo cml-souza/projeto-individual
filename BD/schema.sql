@@ -26,9 +26,13 @@ musica_id INT,
 CONSTRAINT chMsc FOREIGN KEY (musica_id) REFERENCES musica(id)
 );
 
+ALTER TABLE memoria ADD COLUMN favoritar BOOLEAN DEFAULT FALSE;
+
 CREATE TABLE imagem(
 id INT PRIMARY KEY AUTO_INCREMENT,
 url VARCHAR(255),
 memoria_id INT,
 CONSTRAINT chMemo FOREIGN KEY (memoria_id) REFERENCES memoria(id)
 );
+
+SELECT * FROM usuario;

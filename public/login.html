@@ -54,24 +54,50 @@
 </html>
 
 <script>
-    function logar() {
+    async function logar() {
         let email = ipt_email.value;
-        let senhaInserida = ipt_senha.value;
-        let emailCorreto = "brandao@gmail.com";
-        let senhaCorreta = "1234";
+        let senha = ipt_senha.value;
 
         let mensagem = "";
 
-        if (email == emailCorreto &&
-            senhaInserida == senhaCorreta) {
-            mensagem = `<p class="exibir sucesso">Login confirmado!</p>`;
-            exibir.innerHTML = mensagem;
-            setTimeout(() => {
-                window.location.href = "galeria.html";
-            }, 1000);
-        } else {
-            mensagem = `<p class="exibir erro">Senha e/ou Email inválidos.</p>`;
-            exibir.innerHTML = mensagem;
+        // Validação campos preenchidos
+        if (!email || !senha){
+                mensagem = `<p class="exibir erro">Todos os campos devem estar preenchidos!</p>`
+                exibir.innerHTML = mensagem;
+                return;
+            }
+
+        try {
+            const resposta = await fetch("http://localhost:3000/usuarios/autenticar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    senha: senha
+                })
+            });
+
+            if (resposta.ok) {
+                const dados = await resposta.json();
+
+                mensagem = `<p class="exibir sucesso">Login confirmado!</p>`;
+                exibir.innerHTML = mensagem;
+
+                // Salvando Usuário
+                sessionStorage.ID_USUARIO = dados.id;
+
+                setTimeout(() => {
+                    window.location.href = "galeria.html";
+                }, 1000);
+            } else {
+                mensagem = `<p class="exibir erro">Senha e/ou Email Inválidos.</p>`;
+                exibir.innerHTML = mensagem;
+            }
+        } catch(erro) {
+            alert("Erro ao conectar com o Servidor!")
         }
+
     }
 </script>

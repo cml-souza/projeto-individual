@@ -51,7 +51,7 @@
 </html>
 <script>
 
-    function cadastrar() {
+    async function cadastrar() {
         let nome = ipt_nome.value;
         let email = ipt_email.value;
         let senha = ipt_senha.value;
@@ -59,22 +59,48 @@
 
         let mensagem = ``;
 
-        if (nome == "" || nome == null ||
-            email == "" || email == null ||
-            senha == "" || senha == null ||
-            confSenha == "" || confSenha == null) {
-            mensagem = `<p class="exibir erro">Por favor, preencha todos os campos</p>`
-        } else if (!email.includes('.com') || !email.includes('@')) {
-            mensagem = `<p class="exibir erro">Verifique se o email contém ".com" e "@"</p>`
-        } else if (confSenha != senha){
-            mensagem = `<p class="exibir erro">Os campos de senha devem ser iguais.</p>`
-        } else {
-            mensagem = `<p class="exibir sucesso">Cadastro Realizado! <br>
-                Redirecionando...</p>`
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 1000);
+        if (!nome || !email || !senha || !confSenha) {
+            mensagem = `<p class="exibir erro">Por favor, preencha todos os campos</p>`;
+            exibir.innerHTML = mensagem;
+            return;
+        } if (!email.includes('.com') || !email.includes('@')) {
+            mensagem = `<p class="exibir erro">O Email deve conter ".com" e "@"</p>`;
+            exibir.innerHTML = mensagem;
+            return;
+        } if (confSenha != senha){
+            mensagem = `<p class="exibir erro">Os campos de senha devem ser iguais.</p>`;
+            exibir.innerHTML = mensagem;
+            return;
         }
-        exibir.innerHTML = mensagem;
+
+        try {
+            const resposta = await fetch("http://localhost:3000/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nome: nome,
+                    email: email,
+                    senha: senha
+                })
+            });
+
+            if (resposta.ok) {
+                mensagem = `<p class="exibir sucesso">Cadastro Realizado! 
+                    <br> Redirecionando...</p>`;
+                exibir.innerHTML = mensagem;
+
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1000);
+            } else {
+                mensagem = `<p class="exibir erro">Erro ao Cadastrar!</p>`;
+                exibir.innerHTML = mensagem;
+            }
+        } catch (erro) {
+            alert("Erro ao conectar com o Servidor!")
+        }
+
     }
 </script>

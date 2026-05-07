@@ -1,6 +1,6 @@
 var database = require("../database/config");
 
-function listar() {
+function listar(usuario_id) {
      var instrucao = `
         SELECT 
             memoria.id, 
@@ -11,14 +11,16 @@ function listar() {
         FROM memoria
         LEFT JOIN imagem
             ON imagem.memoria_id = memoria.id
-        ORDER BY memoria DESC;`;
+        WHERE memoria.usuario_id = ${usuario_id}
+        ORDER BY memoria.id DESC;
+    `;
         return database.executar(instrucao);
 }
 
-function cadastrar(titulo, imagem, descricao, favoritar){
+function cadastrar(titulo, imagem, descricao, favoritar, usuario_id){
     var instrucaoMemoria = `
-        INSERT INTO memoria (titulo, descricao, favoritar) 
-        VALUES ('${titulo}', '${descricao}', ${favoritar});
+        INSERT INTO memoria (titulo, descricao, favoritar, usuario_id) 
+        VALUES ('${titulo}', '${descricao}', ${favoritar}, ${usuario_id});
         `;
 
     return database.executar(instrucaoMemoria)
@@ -27,7 +29,7 @@ function cadastrar(titulo, imagem, descricao, favoritar){
 
             var instrucaoImagem = `
             INSERT INTO imagem (url, memoria_id)
-            VALUES ('$(imagem)', ${idMemoria});
+            VALUES ('${imagem}', ${idMemoria});
             `;
 
             return database.executar(instrucaoImagem);
