@@ -7,3 +7,4 @@ node_modules/
 
 # uploads (imagens dos usuários)
 public/uploads/
+public/musicas/
