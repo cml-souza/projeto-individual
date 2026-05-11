@@ -51,7 +51,7 @@
             
                 <div class="card-kpi">
                     <div class="kpi-info">
-                        <h3>Taxa Favoritos</h3>
+                        <h3>Taxa Favoritados</h3>
                         <p>46%</p>
                     </div>
             
@@ -64,22 +64,22 @@
             <div class="graficos">
 
         <div class="grafico-card">
-            <h2>Distribuição de Favoritos</h2>
+            <h2>Distribuição de Momentos Favoritados</h2>
             <canvas id="graficoPizza"></canvas>
         </div>
 
         <div class="grafico-card">
-            <h2>Momentos por Mês</h2>
+            <h2>Momentos Registrados por Mês</h2>
             <canvas id="graficoBarra"></canvas>
         </div>
 
         <div class="grafico-card">
-            <h2>Crescimento da Galeria</h2>
+            <h2>Crescimento de Publicações</h2>
             <canvas id="graficoLinha"></canvas>
         </div>
 
         <div class="grafico-card">
-            <h2>Mídias Utilizadas</h2>
+            <h2>Mídias Mais Utilizadas</h2>
             <canvas id="graficoDonut"></canvas>
         </div>
 
@@ -93,13 +93,11 @@
 
 <script>
 
-    // CONFIG GLOBAL
 Chart.defaults.font.family = 'Urbanist';
 Chart.defaults.font.size = 14;
 Chart.defaults.font.weight = 'bold';
 Chart.defaults.color = '#5f3958';
 
-// PIZZA
 new Chart(document.getElementById('graficoPizza'), {
     type: 'doughnut',
 
@@ -108,10 +106,11 @@ new Chart(document.getElementById('graficoPizza'), {
         datasets: [{
             data: [11, 13],
             backgroundColor: [
-                '#8d5682',
+                'rgb(141, 86, 130, 0.15)',
                 '#d9bfd3'
             ],
-            borderWidth: 0
+            borderColor: '#8d5682',
+            borderWidth: 1
         }]
     },
 
@@ -129,7 +128,6 @@ new Chart(document.getElementById('graficoPizza'), {
     }
 });
 
-// BARRAS
 new Chart(document.getElementById('graficoBarra'), {
     type: 'bar',
 
@@ -150,7 +148,8 @@ new Chart(document.getElementById('graficoBarra'), {
     options: {
         plugins: {
             legend: {
-                display: false
+                display: true,
+                position: 'bottom'
             }
         },
 
@@ -174,7 +173,6 @@ new Chart(document.getElementById('graficoBarra'), {
     }
 });
 
-// LINHA
 new Chart(document.getElementById('graficoLinha'), {
     type: 'line',
 
@@ -182,16 +180,12 @@ new Chart(document.getElementById('graficoLinha'), {
         labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
 
         datasets: [{
-            label: 'Memórias Registradas',
+            label: 'Registros',
             data: [3, 8, 12, 24],
-
             borderColor: '#8d5682',
+            borderWidth: 1,
             backgroundColor: 'rgba(141, 86, 130, 0.15)',
-
             fill: true,
-
-            tension: 0.4,
-
             pointBackgroundColor: '#8d5682',
             pointRadius: 5
         }]
@@ -200,7 +194,8 @@ new Chart(document.getElementById('graficoLinha'), {
     options: {
         plugins: {
             legend: {
-                display: false
+                display: true,
+                position: 'bottom'
             }
         },
 
@@ -215,7 +210,6 @@ new Chart(document.getElementById('graficoLinha'), {
     }
 });
 
-// DONUT
 new Chart(document.getElementById('graficoDonut'), {
     type: 'polarArea',
 
@@ -224,14 +218,13 @@ new Chart(document.getElementById('graficoDonut'), {
 
         datasets: [{
             data: [24, 18, 11],
-
+            borderColor: '#8d5682',
             backgroundColor: [
-                '#8d5682',
-                '#b67daa',
+                'rgb(141, 86, 130, 0.15)',
+                'rgb(182, 125, 170, 0.8)',
                 '#d9bfd3'
             ],
-
-            borderWidth: 0
+            borderWidth: 1
         }]
     },
 

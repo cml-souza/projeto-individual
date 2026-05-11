@@ -8,12 +8,13 @@ function cadastrar(
     usuario_id,
     musica) {
 
-    const instrucaoMusica = `
+    if (musica){
+        const instrucaoMusica = `
         INSERT INTO musica (url)
-        VALUES ('${musica}');
+        VALUES (${musica ? '${musica}' : null});
     `;
 
-    return database.executar(instrucaoMusica)
+        return database.executar(instrucaoMusica)
 
         .then(resultadoMusica => {
 
@@ -50,6 +51,48 @@ function cadastrar(
 
             return database.executar(instrucaoImagem);
         });
+    } else {
+
+        const instrucaoMemoria = `
+            INSERT INTO memoria (
+                titulo,
+                descricao,
+                favoritar,
+                usuario_id,
+                musica_id
+            )
+            VALUES (
+                '${titulo}',
+                '${descricao}',
+                ${favoritar},
+                ${usuario_id},
+                null
+            );
+        `;
+
+        return database.executar(instrucaoMemoria)
+
+            .then(resultado => {
+
+                const idMemoria =
+                    resultado.insertId;
+
+                const instrucaoImagem = `
+                    INSERT INTO imagem (
+                        url,
+                        memoria_id
+                    )
+                    VALUES (
+                        '${imagem}',
+                        ${idMemoria}
+                    );
+                `;
+
+                return database.executar(
+                    instrucaoImagem
+                );
+            });
+    }
 
 
 }
