@@ -17,9 +17,13 @@ body {
     background-color: #8d5682;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
-    width: 25%;
+    width: 240px;
     height: 100vh;
     padding: 20px;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
 }
 
 .nav-side {
@@ -96,6 +100,7 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     padding: 30px;
+    margin-left: 240px;
 }
 
 /* CARD */
@@ -126,6 +131,22 @@ body {
     text-align: center;
 }
 
+.musica-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.musica-box button{
+    border-radius: 100px;
+    width: 30px;
+    height: 30px;
+    border: 1.5px solid #5a3e5c;
+    color: #5a3e5c;
+    cursor: pointer;
+}
+
 .acoes {
     display: flex;
     justify-content: center;
@@ -142,6 +163,7 @@ body {
     color: #fff;
     width: 4rem;
     height: 1.5rem;
+    cursor: pointer;
 }
 
 .acoes button:hover {

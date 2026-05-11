@@ -13,29 +13,34 @@ body {
     flex-direction: row;
 }
 
-.cabecalho h1 {
+.logo h1 {
     font-family: 'Urbanist';
     font-size: 60px;
     text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
     color: #8d5682;
 }
 
-.cabecalho img {
-    width: 64px;
+.logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logo img {
+    width: 84px;
+    background-size: cover;
 }
 
 .cabecalho-sub span {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     color: #5a3e5cc9;
-    font-weight: 550px;
-}
-
-.cabecalho-sub span:last-of-type {
     display: flex;
+    flex-direction: column;
+    gap: 5px;
     align-items: center;
     justify-content: center;
-    text-align: center;
 }
 
 .cabecalho-sub a {
@@ -81,7 +86,7 @@ body {
 
 .box-c h3 {
     font-family: 'Urbanist';
-    color: #eee;
+    color: #8d5682;
     font-size: 40px;
 }
 
@@ -89,12 +94,16 @@ body {
     margin-bottom: 25px;
     color: #5a3e5cc9;
     border: none;
-    background-color: #eee;
+    background-color: #eeeeeeb9;
     width: 20rem;
     height: 3rem;
     border-radius: 50px;
     padding: 0 15px 0 15px;
     font-size: 16px;
+}
+
+.input-c input::placeholder {
+    color: #5a3e5cc9;
 }
 
 .c-button {
@@ -105,8 +114,8 @@ body {
 
 .c-button button {
     font-family: Arial, Helvetica, sans-serif;
-    border: none;
-    background-color: #eee;
+    border: 1px solid #8d5682;
+    background-color: #cfb8db;
     color: #8d5682;
     width: 15rem;
     height: 3rem;
@@ -118,9 +127,9 @@ body {
 
 .c-button button:hover {
     transform: scale(1.05);
-    background-color: #eee;
-    color: #8d5682;
-    border: 1px solid #8d5682;
+    background-color: #cfb8db;
+    color: #eee;
+    border: 1px solid #eee;
     box-shadow: 0px 10px 6px #58075e2d;
 }
 

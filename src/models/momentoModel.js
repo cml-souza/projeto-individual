@@ -1,27 +1,45 @@
 var database = require("../database/config");
 
-function cadastrar(titulo, 
-    imagem, 
-    descricao, 
-    favoritar, 
-    usuario_id){
+function cadastrar(
+    titulo,
+    imagem,
+    descricao,
+    favoritar,
+    usuario_id,
+    musica) {
 
-    var instrucaoMemoria = `
-    INSERT INTO memoria (
-        titulo,
-        descricao,
-        favoritar,
-        usuario_id
-    ) 
-    VALUES (
-        '${titulo}',
-        '${descricao}',
-        ${favoritar},
-        ${usuario_id}
-    );
-`;
-         console.log(instrucaoMemoria);
-    return database.executar(instrucaoMemoria)
+    const instrucaoMusica = `
+        INSERT INTO musica (url)
+        VALUES ('${musica}');
+    `;
+
+    return database.executar(instrucaoMusica)
+
+        .then(resultadoMusica => {
+
+            const musica_id =
+                resultadoMusica.insertId;
+
+            const instrucaoMemoria = `
+                INSERT INTO memoria (
+                    titulo,
+                    descricao,
+                    favoritar,
+                    usuario_id,
+                    musica_id
+                )
+                VALUES (
+                    '${titulo}',
+                    '${descricao}',
+                    ${favoritar},
+                    ${usuario_id},
+                    ${musica_id}
+                );
+            `;
+            console.log(instrucaoMemoria);
+            return database.executar(instrucaoMemoria);
+        })
+
         .then(resultado => {
             var idMemoria = resultado.insertId;
 
@@ -32,50 +50,92 @@ function cadastrar(titulo,
 
             return database.executar(instrucaoImagem);
         });
-       
+
+
 }
 
 function listar(usuario_id) {
-     var instrucao = `
+    var instrucao = `
         SELECT 
             memoria.id, 
             memoria.titulo, 
             memoria.descricao,
             memoria.favoritar,
-            imagem.url AS imagem
+            imagem.url AS imagem,
+            musica.url AS musica
         FROM memoria
         LEFT JOIN imagem
             ON imagem.memoria_id = memoria.id
+        LEFT JOIN musica
+            ON musica.id = memoria.musica_id
         WHERE memoria.usuario_id = ${usuario_id}
         ORDER BY memoria.id DESC;
     `;
-        return database.executar(instrucao);
+    return database.executar(instrucao);
 }
 
 function deletar(id) {
-    const instrucao = `
-        DELETE FROM imagem
-        WHERE memoria_id = ${id};
-        `;
 
-    return database.executar(instrucao)
-        .then(() => {
+    const buscarMusica = `
+        SELECT musica_id
+        FROM memoria
+        WHERE id = ${id};
+    `;
 
-            const instrucao2 = `
-                DELETE FROM memoria
-                WHERE id = ${id};
+    return database.executar(buscarMusica)
+
+        .then(resultado => {
+
+            const musica_id =
+                resultado[0].musica_id;
+
+            // Deletar imagem
+            const deletarImagem = `
+                DELETE FROM imagem
+                WHERE memoria_id = ${id};
             `;
 
-        return database.executar(instrucao2);
+            return database.executar(deletarImagem)
+
+                .then(() => {
+
+                    // Deletar memória
+                    const deletarMemoria = `
+                        DELETE FROM memoria
+                        WHERE id = ${id};
+                    `;
+
+                    return database.executar(
+                        deletarMemoria
+                    );
+                })
+
+                .then(() => {
+
+                    // Deletar música
+                    if (musica_id) {
+
+                        const deletarMusica = `
+                            DELETE FROM musica
+                            WHERE id = ${musica_id};
+                        `;
+
+                        return database.executar(
+                            deletarMusica
+                        );
+                    }
+                });
         });
 
 }
 
-function editar(id,
+function editar(
+    id,
     titulo,
     descricao,
     favoritar,
-    imagem
+    imagem,
+    musica
 ) {
     let instrucao = `
         UPDATE memoria
@@ -85,10 +145,10 @@ function editar(id,
             favoritar = ${favoritar}
         WHERE id = ${id};
     `;
-    
+
     return database.executar(instrucao)
         .then(() => {
-            if (imagem){
+            if (imagem) {
                 let instrucaoImg = `
                     UPDATE imagem
                     SET url = '${imagem}'
@@ -96,6 +156,56 @@ function editar(id,
                 `;
 
                 return database.executar(instrucaoImg);
+            }
+        })
+        .then(() => {
+
+            if (musica) {
+
+                const buscarMusica = `
+                SELECT musica_id
+                FROM memoria
+                WHERE id = ${id};
+            `;
+
+                return database.executar(buscarMusica)
+
+                    .then(resultado => {
+
+                        const musica_id =
+                            resultado[0].musica_id;
+
+                        if (musica_id){
+                            const instrucaoMusica = `
+                                UPDATE musica
+                                SET url = '${musica}'
+                                WHERE id = ${musica_id};
+                    `;
+
+                        return database.executar(
+                            instrucaoMusica
+                        );
+                        } else {
+
+                            const inserirMusica = `
+                                INSERT INTO musica (url)
+                                VALUES ('${musica}');
+                            `;
+
+                            return database.executar(inserirMusica)
+                                .then(resultadoMusica => {
+                                    const novaMusicaId = resultadoMusica.insertId;
+                                    
+                                    const atualizarMemoria = `
+                                        UPDATE memoria
+                                        SET musica_id = ${novaMusicaId}
+                                        WHERE id = ${id};
+                                        `;
+
+                                        return database.executar(atualizarMemoria);
+                                });
+                        }
+                    });
             }
         });
 }
@@ -105,5 +215,5 @@ module.exports = {
     cadastrar,
     deletar,
     editar
-    
+
 }

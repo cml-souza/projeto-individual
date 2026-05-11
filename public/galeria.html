@@ -15,7 +15,7 @@
                 <div class="nav-side">
                 <h2>Momentos</h2>
                 <a href="dashboard.html">
-                    <h3>Métricas</h3>
+                    <h3>Dashboard</h3>
                 </a>
                 <a href="#">
                     <h3>Favoritos</h3>
@@ -45,7 +45,11 @@
 
             <input type="text" id="titulo" placeholder="Título">
 
+            <label for="imagem">Upload a Moment</label>
             <input type="file" id="imagem" accept="image/*">
+
+            <label for="musica">Upload a song!</label>
+            <input type="file" id="musica" accept=".mp3,audio/mpeg">
 
             <textarea id="descricao" placeholder="Descrição"></textarea>
 
@@ -114,16 +118,84 @@
             }, 3000);
         }
 
+        function toggleAudio(id) {
+            const audio = document.getElementById(`audio-${id}`);
+
+            const botao =
+                event.target;
+
+            if (audio.paused) {
+
+                audio.play();
+
+                botao.innerText = "⏸";
+
+            } else {
+
+                audio.pause();
+
+                botao.innerText = "▶";
+
+            }
+            audio.onended = () => {
+
+                botao.innerText = "▶";
+            };
+        }
+
         // Criar Card Momento
-        function criarCard(id, titulo, imagem, descricao, favoritar) {
+        function criarCard(
+            id, 
+            titulo, 
+            imagem, 
+            descricao, 
+            favoritar,
+            musica,
+            musicaUrl) {
             return `
         <div class="card">
+
             <span style="margin-top:10px;">${titulo}</span>
+
             <img src="${imagem}">
+
+            ${musicaUrl ? `
+        <div class="musica-box">
+
+            <button
+                class="btn-play"
+                onclick="toggleAudio(${id})"
+            >
+                ▶
+            </button>
+
+            <span>
+                ${
+                musica
+                ? musica
+                .replace(".mp3", "")
+                .replace(/^\d+-/, "")
+                .replaceAll("-", " ")
+                .replaceAll("_", " ")
+                : "Sem música"
+                }
+            </span>
+
+            <audio id="audio-${id}">
+                <source
+                    src="${musicaUrl}"
+                    type="audio/mpeg"
+                >
+            </audio>
+
+        </div>
+        ` : ""}
+
             <p style="padding: 0 10px;">${descricao}</p>
+
             ${favoritar ? "<p style='color: gold; text-align: center;'>Favoritar ⭐</p>" : "<p style='color: silver; text-align: center;'>Favoritar ☆"}    
 
-         <div class="acoes">
+        <div class="acoes">
             <button onclick="editarMomento(${id})">
                 Editar
             </button>
@@ -132,7 +204,7 @@
                 Excluir
             </button>
         </div>
-    </div>
+        </div>
         `;
         }
 
@@ -165,7 +237,7 @@
         }
 
         async function deletarMomento(id) {
-            const confirmar = confirm("Você tem certeza que deseja excluir esse Momento?")
+            const confirmar = confirm("Deseja deletar esse Momento?")
 
             if(!confirmar) return;
 
@@ -208,7 +280,9 @@
                         m.titulo,
                         `/uploads/${m.imagem}`,
                         m.descricao,
-                        m.favoritar == 1
+                        m.favoritar == 1,
+                        m.musica,
+                        `/musicas/${m.musica}`
                     );
                 });
 
@@ -229,6 +303,12 @@
 
             const arquivo = imagem.files[0];
 
+            const musica = document.getElementById("musica");
+
+            const arquivoMusica = musica 
+            ? musica.files[0] :
+            null;
+
             // Validando preenchimento de campos
             if (!titulo && !arquivo) {
                 mostrarAlerta("Atribua um título ou uma imagem!", "erro");
@@ -241,6 +321,7 @@
             formData.append("imagem", arquivo);
             formData.append("descricao", descricao);
             formData.append("favoritar", favoritar ? 1 : 0);
+            formData.append("musica", arquivoMusica);
 
             try {
 

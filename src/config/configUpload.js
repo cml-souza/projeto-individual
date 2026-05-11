@@ -5,12 +5,21 @@ const diretorio = 'public/uploads/';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+
+        if (file.mimetype.startsWith("audio")) {
+            cb(null, "./public/musicas");
+        } else {
         cb(null, "public/uploads");
+        }
     },
     filename: (req, file, cb) => {
-        const nome = Date.now() + path.extname(file.originalname);
+        const nome = Date.now() + "-" + file.originalname;
         cb(null, nome);
     }
 });
 
-module.exports = multer({ storage });
+const upload = multer({
+    storage
+});
+
+module.exports = upload;

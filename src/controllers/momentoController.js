@@ -9,19 +9,29 @@ function cadastrar(req, res) {
     var favoritar = req.body.favoritar;
     var usuario_id = req.body.usuario_id;
 
-    if (!titulo || !req.file || !usuario_id) {
+     const imagem =
+        req.files["imagem"]
+        ? req.files["imagem"][0].filename
+        : null;
+
+    const musica =
+        req.files["musica"]
+        ? req.files["musica"][0].filename
+        : null;
+
+    if (!titulo || !imagem || !usuario_id) {
         return res.status(400).json({
             mensagem: "Dados incompletos"
         });
     }
 
-    var imagem = req.file.filename;
-
-    momentoModel.cadastrar(titulo, 
-        imagem, 
-        descricao, 
-        favoritar, 
-        usuario_id)
+    momentoModel.cadastrar(
+        titulo,
+        imagem,
+        descricao,
+        favoritar,
+        usuario_id,
+        musica)
         .then(() => {
             res.json({ mensagem: "Momento Cadastrado!"});
         })
@@ -66,14 +76,22 @@ function editar(req, res) {
     const descricao = req.body.descricao;
     const favoritar = req.body.favoritar;
 
-    const imagem = req.file
-    ? req.file.filename : null;
+     const imagem =
+        req.files["imagem"]
+        ? req.files["imagem"][0].filename
+        : null;
+
+    const musica =
+        req.files["musica"]
+        ? req.files["musica"][0].filename
+        : null;
 
     momentoModel.editar(id,
         titulo,
         descricao,
         favoritar,
-        imagem
+        imagem,
+        musica
     )
     .then(() => {
         res.json({

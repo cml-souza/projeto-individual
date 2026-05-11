@@ -7,7 +7,10 @@ var momentoController = require("../controllers/momentoController");
 // POST - Subir Momento
 router.post(
     "/cadastrar",
-    upload.single("imagem"),
+    upload.fields([
+    { name: "imagem", maxCount: 1 },
+    { name: "musica", maxCount: 1 }
+]),
     function (req, res) {
         momentoController.cadastrar(req, res);
     });
@@ -28,7 +31,10 @@ router.delete(
 // PUT - Update Momento
 router.put(
     "/editar/:id",
-    upload.single("imagem"),
+    upload.fields([
+    { name: "imagem", maxCount: 1 },
+    { name: "musica", maxCount: 1 }
+]),
     function (req, res) {
         momentoController.editar(req, res);
     });

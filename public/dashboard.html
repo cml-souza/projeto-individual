@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Métricas</title>
     <link rel="stylesheet" href="css/styles-d.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -16,6 +17,234 @@
                 <a href="index.html"><h3>Sair</h3></a>
             </div>
         </div>
+        <div class="dashboard">
+
+            <!-- KPIs -->
+            <div class="kpis">
+            
+                <div class="card-kpi">
+                    <div class="kpi-info">
+                        <h3>Total de Memórias</h3>
+                        <p>24</p>
+                    </div>
+            
+                    <div class="kpi-icon">📸</div>
+                </div>
+            
+                <div class="card-kpi">
+                    <div class="kpi-info">
+                        <h3>Favoritos</h3>
+                        <p>11</p>
+                    </div>
+            
+                    <div class="kpi-icon">⭐</div>
+                </div>
+            
+                <div class="card-kpi">
+                    <div class="kpi-info">
+                        <h3>Músicas Salvas</h3>
+                        <p>18</p>
+                    </div>
+            
+                    <div class="kpi-icon">🎵</div>
+                </div>
+            
+                <div class="card-kpi">
+                    <div class="kpi-info">
+                        <h3>Taxa Favoritos</h3>
+                        <p>46%</p>
+                    </div>
+            
+                    <div class="kpi-icon">📈</div>
+                </div>
+            
+            </div>
+
+            <!-- GRÁFICOS -->
+            <div class="graficos">
+
+        <div class="grafico-card">
+            <h2>Distribuição de Favoritos</h2>
+            <canvas id="graficoPizza"></canvas>
+        </div>
+
+        <div class="grafico-card">
+            <h2>Momentos por Mês</h2>
+            <canvas id="graficoBarra"></canvas>
+        </div>
+
+        <div class="grafico-card">
+            <h2>Crescimento da Galeria</h2>
+            <canvas id="graficoLinha"></canvas>
+        </div>
+
+        <div class="grafico-card">
+            <h2>Mídias Utilizadas</h2>
+            <canvas id="graficoDonut"></canvas>
+        </div>
+
+    </div>
+
+        </div>
+
     </div>
 </body>
 </html>
+
+<script>
+
+    // CONFIG GLOBAL
+Chart.defaults.font.family = 'Urbanist';
+Chart.defaults.font.size = 14;
+Chart.defaults.font.weight = 'bold';
+Chart.defaults.color = '#5f3958';
+
+// PIZZA
+new Chart(document.getElementById('graficoPizza'), {
+    type: 'doughnut',
+
+    data: {
+        labels: ['Favoritos', 'Não Favoritos'],
+        datasets: [{
+            data: [11, 13],
+            backgroundColor: [
+                '#8d5682',
+                '#d9bfd3'
+            ],
+            borderWidth: 0
+        }]
+    },
+
+    options: {
+        cutout: '65%',
+
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        },
+
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+// BARRAS
+new Chart(document.getElementById('graficoBarra'), {
+    type: 'bar',
+
+    data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+
+        datasets: [{
+            label: 'Momentos',
+            data: [4, 7, 5, 9, 11, 14],
+            borderColor: '#8d5682',
+            borderWidth: 1,
+            backgroundColor: 'rgba(141, 86, 130, 0.15)',
+            borderRadius: 10,
+            borderSkipped: false
+        }]
+    },
+
+    options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: '#ececec'
+                }
+            },
+
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        },
+
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+// LINHA
+new Chart(document.getElementById('graficoLinha'), {
+    type: 'line',
+
+    data: {
+        labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+
+        datasets: [{
+            label: 'Memórias Registradas',
+            data: [3, 8, 12, 24],
+
+            borderColor: '#8d5682',
+            backgroundColor: 'rgba(141, 86, 130, 0.15)',
+
+            fill: true,
+
+            tension: 0.4,
+
+            pointBackgroundColor: '#8d5682',
+            pointRadius: 5
+        }]
+    },
+
+    options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+// DONUT
+new Chart(document.getElementById('graficoDonut'), {
+    type: 'polarArea',
+
+    data: {
+        labels: ['Imagens', 'Músicas', 'Favoritos'],
+
+        datasets: [{
+            data: [24, 18, 11],
+
+            backgroundColor: [
+                '#8d5682',
+                '#b67daa',
+                '#d9bfd3'
+            ],
+
+            borderWidth: 0
+        }]
+    },
+
+    options: {
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        },
+
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+</script>

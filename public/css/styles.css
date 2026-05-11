@@ -13,6 +13,7 @@ body {
 .header {
     background-color: #c5a9c9;
     border-radius: 0 0 20px 20px;
+    height: 140px;
 }
 
 .nav-box {
@@ -20,6 +21,7 @@ body {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    padding: 15px;
 }
 
 .logo h1 {
@@ -45,14 +47,14 @@ body {
 }
 
 .btn-start button {
-    border: none;
-    border-radius: 50px;
-    width: 8rem;
-    height: 2.5rem;
+    border: 1px solid #8d5682;
+    border-radius: 18px;
+    width: 8.5rem;
+    height: 3rem;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: 550;
-    background-color: #eee;
+    background-color: #c5a9c9;
     color: #8d5682;
     box-shadow: 0px 2px 6px #58075e2d;
     cursor: pointer;
@@ -63,7 +65,7 @@ body {
     transform: scale(1.05);
     box-shadow: 8px 6px 6px #58075e2d;
     border: 1px solid #8d5682;
-    background-color: #eee;
+    background-color: #eeeeee42;
     color: #8d5682;
 }
 
@@ -187,7 +189,7 @@ body {
     color: #8d5682;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-    font-size: 48px;
+    font-size: 40px;
     margin-top: 100px;
 }
 
@@ -214,7 +216,7 @@ body {
     height: 300px;
     border-radius: 15px;
     box-shadow: 0px 2px 6px #58075e2d;
-    transition: transform 0.2s ease;
+    transition: transform 2s ease;
 }
 
 .card:hover {

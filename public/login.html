@@ -14,10 +14,12 @@
         <div class="content-c">
             <div class="cabecalho">
                 <div class="logo">
-                    <h1>Cherish.</h1><img src="assets/img/logo/logo-def.png" alt="logo">
+                    <a href="index.html">
+                        <h1>Cherish.</h1><img src="assets/img/logo/logo-def.png" alt="logo">
+                    </a>
                 </div>
                 <div class="cabecalho-sub">
-                    <span>Não tem uma conta? <a href="cadastro.html">Cadastre-se!</a></span>
+                    <span>Ainda não tem uma conta? <a href="cadastro.html">Cadastre-se!</a></span>
                 </div>
             </div>
             <div class="container-form">
@@ -62,7 +64,7 @@
 
         // Validação campos preenchidos
         if (!email || !senha){
-                mensagem = `<p class="exibir erro">Todos os campos devem estar preenchidos!</p>`
+                mensagem = `<p class="exibir erro">Por favor, preencha todos os campos!</p>`
                 exibir.innerHTML = mensagem;
                 return;
             }
@@ -94,6 +96,10 @@
             } else {
                 mensagem = `<p class="exibir erro">Senha e/ou Email Inválidos.</p>`;
                 exibir.innerHTML = mensagem;
+
+                setTimeout(() => {
+                    exibir.style.display = "none"
+                }, 1000)
             }
         } catch(erro) {
             alert("Erro ao conectar com o Servidor!")

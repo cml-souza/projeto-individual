@@ -14,10 +14,12 @@
         <div class="content-c">
             <div class="cabecalho">
                 <div class="logo">
-                    <h1>Cherish.</h1><img src="assets/img/logo/logo-def.png" alt="logo">
+                    <a href="index.html">
+                        <h1>Cherish.</h1><img src="assets/img/logo/logo-def.png" alt="logo">
+                    </a>
                 </div>
                 <div class="cabecalho-sub">
-                    <span>Já tem uma conta? <a href="login.html"> Clique Aqui!</a></span>
+                    <span>Já tem uma conta? <a href="login.html"> Entre por Aqui!</a></span>
                     <br>
                 </div>
             </div>
@@ -60,11 +62,11 @@
         let mensagem = ``;
 
         if (!nome || !email || !senha || !confSenha) {
-            mensagem = `<p class="exibir erro">Por favor, preencha todos os campos</p>`;
+            mensagem = `<p class="exibir erro">Por favor, preencha todos os campos!</p>`;
             exibir.innerHTML = mensagem;
             return;
         } if (!email.includes('.com') || !email.includes('@')) {
-            mensagem = `<p class="exibir erro">O Email deve conter ".com" e "@"</p>`;
+            mensagem = `<p class="exibir erro">O Email deve conter "@" e ".com"</p>`;
             exibir.innerHTML = mensagem;
             return;
         } if (confSenha != senha){
@@ -97,6 +99,10 @@
             } else {
                 mensagem = `<p class="exibir erro">Erro ao Cadastrar!</p>`;
                 exibir.innerHTML = mensagem;
+
+                setTimeout(() => {
+                    exibir.style.display = "none"
+                }, 1000)
             }
         } catch (erro) {
             alert("Erro ao conectar com o Servidor!")
