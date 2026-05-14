@@ -53,7 +53,7 @@
 </html>
 <script>
 
-    async function cadastrar() {
+    function cadastrar() {
         let nome = ipt_nome.value;
         let email = ipt_email.value;
         let senha = ipt_senha.value;
@@ -75,8 +75,7 @@
             return;
         }
 
-        try {
-            const resposta = await fetch("http://localhost:3000/usuarios/cadastrar", {
+        fetch("http://localhost:3000/usuarios/cadastrar", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -86,27 +85,32 @@
                     email: email,
                     senha: senha
                 })
-            });
-
-            if (resposta.ok) {
-                mensagem = `<p class="exibir sucesso">Cadastro Realizado! 
+            })
+            .then(function(resposta){
+                if (resposta.ok) {
+                resposta.json().then(function(dados) {
+                    mensagem = `<p class="exibir sucesso">Cadastro Realizado! 
                     <br> Redirecionando...</p>`;
                 exibir.innerHTML = mensagem;
 
                 setTimeout(() => {
                     window.location.href = "login.html";
                 }, 1000);
+            });
+
             } else {
                 mensagem = `<p class="exibir erro">Erro ao Cadastrar!</p>`;
                 exibir.innerHTML = mensagem;
 
                 setTimeout(() => {
                     exibir.style.display = "none"
-                }, 1000)
+                }, 1000);
             }
-        } catch (erro) {
+            })
+        .catch (function(erro) {
             alert("Erro ao conectar com o Servidor!")
-        }
+            console.log(erro);
+        }); 
 
     }
 </script>

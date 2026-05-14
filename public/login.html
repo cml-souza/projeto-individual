@@ -56,7 +56,7 @@
 </html>
 
 <script>
-    async function logar() {
+    function logar() {
         let email = ipt_email.value;
         let senha = ipt_senha.value;
 
@@ -69,8 +69,7 @@
                 return;
             }
 
-        try {
-            const resposta = await fetch("http://localhost:3000/usuarios/autenticar", {
+            fetch("http://localhost:3000/usuarios/autenticar", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -79,12 +78,11 @@
                     email: email,
                     senha: senha
                 })
-            });
-
-            if (resposta.ok) {
-                const dados = await resposta.json();
-
-                mensagem = `<p class="exibir sucesso">Login confirmado!</p>`;
+            })
+            .then(function(resposta){
+                if (resposta.ok) {
+                resposta.json().then(function(dados) {
+                    mensagem = `<p class="exibir sucesso">Login confirmado!</p>`;
                 exibir.innerHTML = mensagem;
 
                 // Salvando Usuário
@@ -93,17 +91,23 @@
                 setTimeout(() => {
                     window.location.href = "galeria.html";
                 }, 1000);
+                
+            });
+            
             } else {
                 mensagem = `<p class="exibir erro">Senha e/ou Email Inválidos.</p>`;
                 exibir.innerHTML = mensagem;
 
                 setTimeout(() => {
                     exibir.style.display = "none"
-                }, 1000)
+                }, 1000);
             }
-        } catch(erro) {
-            alert("Erro ao conectar com o Servidor!")
-        }
+            })
+         .catch(function(erro) {
+            alert("Erro ao conectar com o Servidor!");
+            console.log(erro);
+        });
 
     }
+
 </script>

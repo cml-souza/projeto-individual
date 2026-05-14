@@ -118,7 +118,7 @@
             }, 3000);
         }
 
-        function toggleAudio(id) {
+        function tocarMusica(id) {
             const audio = document.getElementById(`audio-${id}`);
 
             const botao =
@@ -164,7 +164,7 @@
 
             <button
                 class="btn-play"
-                onclick="toggleAudio(${id})"
+                onclick="tocarMusica(${id})"
             >
                 ▶
             </button>
@@ -208,17 +208,18 @@
         `;
         }
 
-        async function editarMomento(id) {
+        function editarMomento(id) {
             idEditando = id;
 
-            try {
-                const resposta = await fetch(
-                    `/momentos/listar?usuario_id=${usuarioId}`
-                );
+            fetch(`/momentos/listar?usuario_id=${usuarioId}`)
+            .then(function(resposta){
+                return resposta.json();
+            })
 
-                const momentos = await resposta.json();
-
-                const momento = momentos.find(m => m.id == id);
+            .then(function(momentos){
+                const momento = momentos.find(function(m){
+                    return m.id == id;
+                });
 
                 document.getElementById("titulo").value =
                     momento.titulo;
@@ -230,44 +231,50 @@
                     momento.favoritar == 1;
 
                 modal.style.display = "flex";
-            } catch (erro) {
+            })
+            .catch (function(erro) {
                 console.log(erro);
-            }
+            });
             
         }
 
-        async function deletarMomento(id) {
+        function deletarMomento(id) {
             const confirmar = confirm("Deseja deletar esse Momento?")
 
             if(!confirmar) return;
 
-            try {
-                const resposta = await fetch(
-                    `/momentos/deletar/${id}`,
+            fetch(`/momentos/deletar/${id}`,
                     {
                         method: "DELETE"
-                    }
-                );
+                    })
 
-                const dados = await resposta.json();
+                .then(function(resposta){
+                    return resposta.json();
+                })
+                .then(function(dados) {
+                    mostrarAlerta(dados.mensagem, "sucesso");
 
-                mostrarAlerta(dados.mensagem, "sucesso");
+                    carregarMomento();
+                })
 
-                carregarMomento();
-            }catch (erro) {
-            console.log(erro);
-            mostrarAlerta("Erro ao deletar: ", "erro");
-        }
+                
+            .catch (function(erro){
+                console.log(erro);
+                mostrarAlerta("Erro ao deletar: ", "erro");
+            });
     }
 
         // Carregando Momentos Filtrados por usuário (GET)
-        async function carregarMomento() {
-            try {
+        function carregarMomento() {
+                // Log verificando se ele pega o ID corretamente pós login
                 console.log("ID_USUARIO:", usuarioId);
-                const resposta = await fetch(`http://localhost:3000/momentos/listar?usuario_id=${usuarioId}`);
-                const momentos = await resposta.json();
+                fetch(`http://localhost:3000/momentos/listar?usuario_id=${usuarioId}`)
+                .then(function(resposta){
+                    return resposta.json();
+                })
 
-                galeria.innerHTML = "";
+                .then(function(momentos){
+                    galeria.innerHTML = "";
 
                 if (!Array.isArray(momentos)) {
                     console.log("Resposta inválida:", momentos);
@@ -285,17 +292,16 @@
                         `/musicas/${m.musica}`
                     );
                 });
-
-            }
-            catch (erro) {
+                })
+            .catch (function(erro) {
                 console.log("Erro ao carregar momentos: ", erro)
-            }
+            });
         }
 
         window.onload = carregarMomento;
 
         // Salvar Momento (POST)
-        salvar.onclick = async () => {
+        salvar.onclick = function() {
             const titulo = document.getElementById("titulo").value;
             const imagem = document.getElementById("imagem");
             const descricao = document.getElementById("descricao").value;
@@ -323,18 +329,17 @@
             formData.append("favoritar", favoritar ? 1 : 0);
             formData.append("musica", arquivoMusica);
 
-            try {
+            let req;
 
-                if (idEditando) {
-            resposta = await fetch(
-                `/momentos/editar/${idEditando}`,
+            if (idEditando) {
+            req =  fetch(`/momentos/editar/${idEditando}`,
                 {
                     method: "PUT",
                     body: formData
                 }
             );
         } else {
-            resposta = await fetch(
+            req = fetch(
                 `/momentos/cadastrar`,
                 {
                     method: "POST",
@@ -343,18 +348,26 @@
             );
         }
 
-                const dados = await resposta.json();
-                console.log(dados);
+        req
 
-                mostrarAlerta(dados.mensagem, "sucesso");
+        .then(function(resposta){
+            return resposta.json();
+        })
+        .then(function(dados){
+            console.log(dados);
 
-                carregarMomento();
-                modal.style.display = "none";
+            mostrarAlerta(dados.mensagem, "sucesso");
 
-                // Tratando erro
-            } catch (erro) {
-                alert("Erro ao enviar para API", "erro")
-            }
+            carregarMomento();
+
+            modal.style.display = "none";
+        })
+
+   // Tratando erro
+        .catch (function(erro) {
+             alert("Erro ao enviar para API", "erro");
+             console.log(erro);
+        });
         }
 
     </script>
