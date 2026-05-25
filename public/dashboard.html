@@ -25,7 +25,7 @@
                 <div class="card-kpi">
                     <div class="kpi-info">
                         <h3>Total de Memórias</h3>
-                        <p>24</p>
+                        <span id="span_total">-</span>
                     </div>
             
                     <div class="kpi-icon">📸</div>
@@ -34,7 +34,7 @@
                 <div class="card-kpi">
                     <div class="kpi-info">
                         <h3>Favoritos</h3>
-                        <p>11</p>
+                        <span id="span_favoritos">-</span>
                     </div>
             
                     <div class="kpi-icon">⭐</div>
@@ -43,7 +43,7 @@
                 <div class="card-kpi">
                     <div class="kpi-info">
                         <h3>Músicas Salvas</h3>
-                        <p>18</p>
+                        <span id="span_musicas">-</span>
                     </div>
             
                     <div class="kpi-icon">🎵</div>
@@ -52,7 +52,7 @@
                 <div class="card-kpi">
                     <div class="kpi-info">
                         <h3>Taxa Favoritados</h3>
-                        <p>46%</p>
+                        <span id="span_taxa">-</span>
                     </div>
             
                     <div class="kpi-icon">📈</div>
@@ -93,153 +93,169 @@
 
 <script>
 
-    let exibirGrafico = document.getElementById(`)
+   var usuario_id = sessionStorage.ID_USUARIO;
 
-Chart.defaults.font.family = 'Urbanist';
-Chart.defaults.font.size = 14;
-Chart.defaults.font.weight = 'bold';
-Chart.defaults.color = '#5f3958';
+   function carregarKPI(){
 
-new Chart(document.getElementById('graficoPizza'), {
-    type: 'doughnut',
+    fetch (`/kpi/total/${usuario_id}`)
+        .then(function(resposta) {
+            return resposta.json();
+        })
+        .then(function(dados){
+            console.log(dados);
+            span_total.innerText = dados[0].total;
+        });
 
-    data: {
-        labels: ['Favoritos', 'Não Favoritos'],
-        datasets: [{
-            data: [11, 13],
-            backgroundColor: [
-                'rgb(141, 86, 130, 0.15)',
-                '#d9bfd3'
-            ],
-            borderColor: '#8d5682',
-            borderWidth: 1
-        }]
-    },
+    fetch (`/kpi/favoritos/${usuario_id}`)
+        .then(function(resposta){
+            return resposta.json();
+        })
+        .then(function(dados){
+            span_favoritos.innerText = dados[0].favoritos;
+        });
 
-    options: {
-        cutout: '65%',
+    fetch (`/kpi/musicas/${usuario_id}`)
+        .then(function(resposta){
+            return resposta.json()
+        })
+        .then(function(dados){
+            span_musicas.innerText = dados[0].musicas;
+        });
 
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        },
+    fetch (`/kpi/taxa/${usuario_id}`)
+        .then(function(resposta){
+            return resposta.json()
+        })
+        .then(function(dados){
+            span_taxa.innerText = dados[0].taxa + "%";
+        })
+   }
+   
+   window.onload = function(){
+        carregarKPI();
+        carregarGraficoPizza();
+        setInterval(atualizarGraficoPizza, 5000);
+        carregarGraficoBarra();
+        setInterval(atualizarGraficoBarra, 5000);
 
-        responsive: true,
-        maintainAspectRatio: false
+   }
+
+   let graficoPizzaChart;
+
+   function carregarGraficoPizza(){
+
+        fetch(`/graficos/distribuicao/${usuario_id}`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                let favoritos = dados[0].favoritos;
+                let naoFavoritos = dados[0].naoFavoritos;
+
+                graficoPizzaChart = new Chart(graficoPizza, {
+                    type: 'pie',
+                    
+                    options: {
+                    responsive: true,
+                    plugins: {
+                     legend: {
+                        position: 'bottom',
+                    },
+                    }
+                    },    
+                    data: {
+                        labels: ['Favoritados', 'Não Favoritos'],
+                        datasets: [{
+                            data: [favoritos, naoFavoritos],
+                            backgroundColor: [
+                            '#8d5682',
+                            '#d9bfd3'
+                        ],
+
+                        borderWidth: 0
+                        }],
+                    }
+                })
+            });
+   }
+
+    function atualizarGraficoPizza(){
+        fetch(`/graficos/distribuicao/${usuario_id}`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                let favoritos = dados[0].favoritos;
+                let naoFavoritos = dados[0].naoFavoritos;
+
+                graficoPizzaChart.data.datasets[0].data = [
+                    favoritos,
+                    naoFavoritos
+                ];
+                
+                graficoPizzaChart.update();
+            });
     }
-});
 
-new Chart(document.getElementById('graficoBarra'), {
-    type: 'bar',
+    let graficoBarraChart;
 
-    data: {
-        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+    function carregarGraficoBarra(){
 
-        datasets: [{
-            label: 'Momentos',
-            data: [4, 7, 5, 9, 11, 14],
-            borderColor: '#8d5682',
-            borderWidth: 1,
-            backgroundColor: 'rgba(141, 86, 130, 0.15)',
-            borderRadius: 10,
-            borderSkipped: false
-        }]
-    },
+        fetch(`/graficos/registrosMensal/${usuario_id}`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                let labels = [];
+                let valores = [];
 
-    options: {
-        plugins: {
-            legend: {
-                display: true,
-                position: 'bottom'
-            }
-        },
-
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: {
-                    color: '#ececec'
+                for (let i = 0; i < dados.length; i++){
+                    labels.push("Mês " + dados[i].mes);
+                    valores.push(dados[i].quantidade);
                 }
-            },
 
-            x: {
-                grid: {
-                    display: false
+                graficoBarraChart = new Chart(graficoBarra, {
+
+                type: 'bar',
+
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    }
+                },
+
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Momentos',
+                        data: valores,
+                        backgroundColor: '#8d5682',
+                        borderWidth: 0
+                    }]
                 }
-            }
-        },
+            });
 
-        responsive: true,
-        maintainAspectRatio: false
+        });
+
     }
-});
 
-new Chart(document.getElementById('graficoLinha'), {
-    type: 'line',
+    function atualizarGraficoBarra(){
+        fetch(`/graficos/r_mensal/${usuario_id}`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                let labels = [];
+                let valores = [];
 
-    data: {
-        labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                for (let i = 0; i < dados.length; i++){
+                    labels.push("Mês " + dados[i].mes);
+                    valores.push(dados[i].quantidade);
+                }
 
-        datasets: [{
-            label: 'Registros',
-            data: [3, 8, 12, 24],
-            borderColor: '#8d5682',
-            borderWidth: 1,
-            backgroundColor: 'rgba(141, 86, 130, 0.15)',
-            fill: true,
-            pointBackgroundColor: '#8d5682',
-            pointRadius: 5
-        }]
-    },
+                graficoBarraChart.data.datasets[0].data = [
+                    labels,
+                    valores
+                ]
 
-    options: {
-        plugins: {
-            legend: {
-                display: true,
-                position: 'bottom'
-            }
-        },
-
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        },
-
-        responsive: true,
-        maintainAspectRatio: false
+                graficoBarraChart.update();
+            });
     }
-});
 
-new Chart(document.getElementById('graficoDonut'), {
-    type: 'polarArea',
-
-    data: {
-        labels: ['Imagens', 'Músicas', 'Favoritos'],
-
-        datasets: [{
-            data: [24, 18, 11],
-            borderColor: '#8d5682',
-            backgroundColor: [
-                'rgb(141, 86, 130, 0.15)',
-                'rgb(182, 125, 170, 0.8)',
-                '#d9bfd3'
-            ],
-            borderWidth: 1
-        }]
-    },
-
-    options: {
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        },
-
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
 
 </script>

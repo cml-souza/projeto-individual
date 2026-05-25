@@ -36,3 +36,5 @@ CONSTRAINT chMemo FOREIGN KEY (memoria_id) REFERENCES memoria(id)
 );
 
 SELECT * FROM usuario;
+SELECT * FROM memoria;
+SELECT * FROM musica;

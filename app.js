@@ -18,6 +18,8 @@ var app = express();
 var indexRouter = require("./src/routes/index");
 var momentosRouter = require("./src/routes/momentos");
 var usuariosRouter = require("./src/routes/usuarios");
+var kpiRouter = require("./src/routes/kpis");
+var graficosRouter = require("./src/routes/graficos");
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -29,6 +31,8 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/momentos", momentosRouter);
 app.use("/usuarios", usuariosRouter);
+app.use("/kpi", kpiRouter);
+app.use("/graficos", graficosRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`

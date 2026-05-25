@@ -100,7 +100,7 @@ body {
     margin: 0;
 }
 
-.kpi-info p {
+.kpi-info span {
     color: white;
     font-size: 38px;
     font-weight: bold;
