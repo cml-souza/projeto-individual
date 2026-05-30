@@ -113,10 +113,16 @@ body {
 }
 
 /* GRÁFICOS */
+.chart-c {
+    position: relative;
+    flex: 1;
+    min-height: 350px;
+}
+
 .graficos {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 25px;
 }
 
 .grafico-card {
@@ -124,7 +130,7 @@ body {
     border-radius: 25px;
     padding: 25px;
     box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
-    height: 380px;
+    height: 450px;
     display: flex;
     flex-direction: column;
 }
@@ -136,22 +142,10 @@ body {
     margin-bottom: 20px;
 }
 
-#graficoPizza canvas {
-    flex: 1;
-    width: 65% !important;
-    height: 280px !important;
-}
-
-#graficoRosca canvas {
-    flex: 1;
-    width: 65% !important;
-    height: 280px !important;
-}
-
 .grafico-card canvas {
     flex: 1;
     width: 100% !important;
-    height: 280px !important;
+    height: 80% !important;
 }
 
 .saudacoes {
