@@ -14,17 +14,18 @@
             <div class="header">
                 <div class="nav-side">
                 <h2>Momentos</h2>
+                <span class="saudacoes">Olá, <span class="saudacoes" id="nome_usuario"></span>! Está é sua galeria de momentos.</span>
                 <a href="dashboard.html">
                     <h3>Dashboard</h3>
                 </a>
-                <a href="#">
+                <a href="favoritos.html">
                     <h3>Favoritos</h3>
                 </a>
                 <a href="index.html">
                     <h3>Sair</h3>
                 </a>
                 <div class="btn-adicionar">
-                    <button id="btnAdd-m">+ Adicionar Momento</button>
+                    <button id="btnAdd-m" onclick="abrirModal()">+ Adicionar Momento</button>
                 </div>
             </div>
             </div>
@@ -71,6 +72,10 @@
         const modal = document.getElementById("modal");
         
         const usuarioId = sessionStorage.getItem("ID_USUARIO");
+        var nome_usuario = sessionStorage.NOME_USUARIO;
+
+        let nome = document.getElementById('nome_usuario');
+        nome.innerText = nome_usuario;
         console.log(usuarioId);
 
         const salvar = document.getElementById("save");
@@ -79,7 +84,7 @@
         const galeria = document.getElementById("galeria");
 
         // Abrir Modal
-        btn.onclick = () => {
+        function abrirModal() {
             // Reset modo Edição
             idEditando = null;
 
@@ -162,13 +167,9 @@
             ${musicaUrl ? `
         <div class="musica-box">
 
-            <button
-                class="btn-play"
-                onclick="tocarMusica(${id})"
-            >
+            <button class="btn-play" onclick="tocarMusica(${id})">
                 ▶
             </button>
-
             <span>
                 ${
                 musica
@@ -180,7 +181,6 @@
                 : "Sem música"
                 }
             </span>
-
             <audio id="audio-${id}">
                 <source
                     src="${musicaUrl}"
@@ -211,7 +211,7 @@
         function editarMomento(id) {
             idEditando = id;
 
-            fetch(`/momentos/listar?usuario_id=${usuarioId}`)
+            fetch(`/momentos/listar/${usuarioId}`)
             .then(function(resposta){
                 return resposta.json();
             })
@@ -268,7 +268,7 @@
         function carregarMomento() {
                 // Log verificando se ele pega o ID corretamente pós login
                 console.log("ID_USUARIO:", usuarioId);
-                fetch(`http://localhost:3000/momentos/listar?usuario_id=${usuarioId}`)
+                fetch(`/momentos/listar/${usuarioId}`)
                 .then(function(resposta){
                     return resposta.json();
                 })
@@ -332,12 +332,30 @@
             let req;
 
             if (idEditando) {
-            req =  fetch(`/momentos/editar/${idEditando}`,
+            fetch(`/momentos/editar/${idEditando}`,
                 {
                     method: "PUT",
                     body: formData
-                }
-            );
+                })
+
+            .then(function(resposta){
+                return resposta.json();
+            })
+            .then(function(dados){
+                console.log(dados);
+
+                mostrarAlerta(dados.mensagem, "sucesso");
+
+                carregarMomento();
+
+                modal.style.display = "none";
+            })
+        
+   // Tratando erro
+        .catch (function(erro) {
+            alert("Erro ao enviar para API", "erro");
+            console.log(erro);
+        });
         } else {
             req = fetch(
                 `/momentos/cadastrar`,
@@ -345,12 +363,8 @@
                     method: "POST",
                     body: formData
                 }
-            );
-        }
-
-        req
-
-        .then(function(resposta){
+            )
+            .then(function(resposta){
             return resposta.json();
         })
         .then(function(dados){
@@ -362,13 +376,14 @@
 
             modal.style.display = "none";
         })
-
+        
    // Tratando erro
         .catch (function(erro) {
-             alert("Erro ao enviar para API", "erro");
-             console.log(erro);
+            alert("Erro ao enviar para API", "erro");
+            console.log(erro);
         });
         }
+    }
 
     </script>
 </body>

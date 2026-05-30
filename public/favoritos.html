@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles-g.css">
+    <title>Momentos Favoritos</title>
+</head>
+<body>
+    <div class="container">
+        <div class="content-h">
+            <div class="header">
+                <div class="nav-side">
+                <h2>Momentos Favoritos</h2>
+                <span class="saudacoes">Aqui estão seus momentos favoritos, <span class="saudacoes" id="nome_usuario"></span>.</span>
+                <a href="dashboard.html">
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="galeria.html">
+                    <h3>Galeria</h3>
+                </a>
+                <a href="index.html">
+                    <h3>Sair</h3>
+                </a>
+            </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+
+            <div id="galeria" class="galeria"></div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+
+<script>
+    const usuarioId = sessionStorage.getItem("ID_USUARIO");
+    var nome_usuario = sessionStorage.NOME_USUARIO;
+    const galeria = document.getElementById("galeria");
+
+    let nome = document.getElementById('nome_usuario');
+    nome.innerText = nome_usuario;
+
+    function criarCard(
+            id, 
+            titulo, 
+            imagem, 
+            descricao, 
+            favoritar,
+            musica,
+            musicaUrl) {
+            return `
+        <div class="card">
+
+            <span style="margin-top:10px;">${titulo}</span>
+
+            <img src="${imagem}">
+
+            ${musicaUrl ? `
+        <div class="musica-box">
+
+            <button class="btn-play" onclick="tocarMusica(${id})">
+                ▶
+            </button>
+            <span>
+                ${
+                musica
+                ? musica
+                .replace(".mp3", "")
+                .replace(/^\d+-/, "")
+                .replaceAll("-", " ")
+                .replaceAll("_", " ")
+                : "Sem música"
+                }
+            </span>
+            <audio id="audio-${id}">
+                <source
+                    src="${musicaUrl}"
+                    type="audio/mpeg"
+                >
+            </audio>
+
+        </div>
+        ` : ""}
+
+            <p style="padding: 0 10px;">${descricao}</p>
+
+            ${favoritar ? "<p style='color: gold; text-align: center;'>Favoritar ⭐</p>" : "<p style='color: silver; text-align: center;'>Favoritar ☆"}    
+
+        <div class="acoes">
+            <button onclick="editarMomento(${id})">
+                Editar
+            </button>
+
+            <button onclick="deletarMomento(${id})">
+                Excluir
+            </button>
+        </div>
+        </div>
+        `;
+        }
+
+    function carregarMomento() {
+                fetch(`/favoritos/${usuarioId}`)
+                .then(function(resposta){
+                    return resposta.json();
+                })
+
+                .then(function(momentos){
+                    galeria.innerHTML = "";
+
+                if (!Array.isArray(momentos)) {
+                    console.log("Resposta inválida:", momentos);
+                    return;
+                }
+
+                momentos.forEach(m => {
+                    galeria.innerHTML += criarCard(
+                        m.id,
+                        m.titulo,
+                        `/uploads/${m.imagem}`,
+                        m.descricao,
+                        m.favoritar == 1,
+                        m.musica,
+                        `/musicas/${m.musica}`
+                    );
+                });
+                })
+            .catch (function(erro) {
+                console.log("Erro ao carregar momentos: ", erro)
+            });
+        }
+
+        window.onload = carregarMomento;
+
+        function tocarMusica(id) {
+            const audio = document.getElementById(`audio-${id}`);
+
+            const botao =
+                event.target;
+
+            if (audio.paused) {
+
+                audio.play();
+
+                botao.innerText = "⏸";
+
+            } else {
+
+                audio.pause();
+
+                botao.innerText = "▶";
+
+            }
+            audio.onended = () => {
+
+                botao.innerText = "▶";
+            };
+        }
+
+</script>

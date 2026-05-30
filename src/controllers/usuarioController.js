@@ -9,7 +9,7 @@ function autenticar(req, res) {
     }
     
     if (senha == undefined) {
-        return res.status(400).send("Sua senha está indefinida!");
+        return res.status(400).send("Sua senha está undefined!");
     }
 
     

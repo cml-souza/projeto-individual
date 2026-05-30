@@ -12,8 +12,9 @@
         <div class="header">
             <div class="nav-side">
                 <h2>Dashboard</h2>
+                <span class="saudacoes">Observe o desenvolvimento da sua galeria, <span class="saudacoes" id="nome_usuario"></span>.</span>
                 <a href="galeria.html"><h3>Galeria</h3></a>
-                <a href="#"><h3>Favoritos</h3></a>
+                <a href="favoritos.html"><h3>Favoritos</h3></a>
                 <a href="index.html"><h3>Sair</h3></a>
             </div>
         </div>
@@ -80,7 +81,7 @@
 
         <div class="grafico-card">
             <h2>Mídias Mais Utilizadas</h2>
-            <canvas id="graficoDonut"></canvas>
+            <canvas id="graficoRosca"></canvas>
         </div>
 
     </div>
@@ -93,9 +94,13 @@
 
 <script>
 
-   var usuario_id = sessionStorage.ID_USUARIO;
+    var usuario_id = sessionStorage.ID_USUARIO;
+    var nome_usuario = sessionStorage.NOME_USUARIO;
 
-   function carregarKPI(){
+    let nome = document.getElementById('nome_usuario');
+    nome.innerText = nome_usuario;
+
+    function carregarKPI(){
 
     fetch (`/kpi/total/${usuario_id}`)
         .then(function(resposta) {
@@ -129,20 +134,24 @@
         .then(function(dados){
             span_taxa.innerText = dados[0].taxa + "%";
         })
-   }
-   
-   window.onload = function(){
+    }
+
+    window.onload = function(){
         carregarKPI();
         carregarGraficoPizza();
         setInterval(atualizarGraficoPizza, 5000);
         carregarGraficoBarra();
         setInterval(atualizarGraficoBarra, 5000);
+        carregarGraficoLinha();
+        setInterval(atualizarGraficoLinha, 5000);
+        carregarGraficoRosca();
+        setInterval(atualizarGraficoRosca, 5000);
 
-   }
+    }
 
-   let graficoPizzaChart;
+    let graficoPizzaChart;
 
-   function carregarGraficoPizza(){
+    function carregarGraficoPizza(){
 
         fetch(`/graficos/distribuicao/${usuario_id}`)
             .then(resposta => resposta.json())
@@ -151,31 +160,31 @@
                 let naoFavoritos = dados[0].naoFavoritos;
 
                 graficoPizzaChart = new Chart(graficoPizza, {
+
                     type: 'pie',
-                    
                     options: {
                     responsive: true,
                     plugins: {
-                     legend: {
+                    legend: {
                         position: 'bottom',
-                    },
-                    }
+                            }
+                        },
                     },    
                     data: {
                         labels: ['Favoritados', 'Não Favoritos'],
                         datasets: [{
                             data: [favoritos, naoFavoritos],
                             backgroundColor: [
-                            '#8d5682',
-                            '#d9bfd3'
+                            '#8d5682c9',
+                            '#d9bfd3a0'
                         ],
-
-                        borderWidth: 0
+                        borderColor: '#8d5682',
+                        borderWidth: 1
                         }],
                     }
                 })
             });
-   }
+    }
 
     function atualizarGraficoPizza(){
         fetch(`/graficos/distribuicao/${usuario_id}`)
@@ -200,34 +209,48 @@
         fetch(`/graficos/registrosMensal/${usuario_id}`)
             .then(resposta => resposta.json())
             .then(dados => {
-                let labels = [];
-                let valores = [];
+                let labels = [
+                    'Jan',
+                    'Fev',
+                    'Mar',
+                    'Abr',
+                    'Mai',
+                    'Jun',
+                    'Jul',
+                    'Ago',
+                    'Set',
+                    'Out',
+                    'Nov',
+                    'Dez'
+                ];
+                let valores = [0,0,0,0,0,0,0,0,0,0,0,0];
 
                 for (let i = 0; i < dados.length; i++){
-                    labels.push("Mês " + dados[i].mes);
-                    valores.push(dados[i].quantidade);
+                    let mes = dados[i].mes;
+                    valores[mes - 1] = dados[i].quantidade;
                 }
 
                 graficoBarraChart = new Chart(graficoBarra, {
 
                 type: 'bar',
-
                 options: {
                     responsive: true,
+                    fill: true,
                     plugins: {
                         legend: {
                             position: 'bottom',
                         }
                     }
                 },
-
                 data: {
                     labels: labels,
                     datasets: [{
                         label: 'Momentos',
                         data: valores,
-                        backgroundColor: '#8d5682',
-                        borderWidth: 0
+                        borderRadius: 5,
+                        backgroundColor: '#8d568286',
+                        borderColor: '#8d5682',
+                        borderWidth: 1
                     }]
                 }
             });
@@ -237,25 +260,178 @@
     }
 
     function atualizarGraficoBarra(){
-        fetch(`/graficos/r_mensal/${usuario_id}`)
+        fetch(`/graficos/registrosMensal/${usuario_id}`)
             .then(resposta => resposta.json())
             .then(dados => {
-                let labels = [];
-                let valores = [];
+                let labels = [
+                    'Jan',
+                    'Fev',
+                    'Mar',
+                    'Abr',
+                    'Mai',
+                    'Jun',
+                    'Jul',
+                    'Ago',
+                    'Set',
+                    'Out',
+                    'Nov',
+                    'Dez'
+                ];
+                let valores = [0,0,0,0,0,0,0,0,0,0,0,0];
 
                 for (let i = 0; i < dados.length; i++){
-                    labels.push("Mês " + dados[i].mes);
-                    valores.push(dados[i].quantidade);
+                    let mes = dados[i].mes;
+                    valores[mes - 1] = dados[i].quantidade;
                 }
 
-                graficoBarraChart.data.datasets[0].data = [
-                    labels,
-                    valores
-                ]
+                graficoBarraChart.data.labels = labels;
+                graficoBarraChart.data.datasets[0].data = valores;
 
                 graficoBarraChart.update();
             });
     }
 
+    let graficoLinhaChart;
+
+    function carregarGraficoLinha(){
+
+        fetch(`/graficos/crescimento/${usuario_id}`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                let labels = [
+                    'Jan',
+                    'Fev',
+                    'Mar',
+                    'Abr',
+                    'Mai',
+                    'Jun',
+                    'Jul',
+                    'Ago',
+                    'Set',
+                    'Out',
+                    'Nov',
+                    'Dez'
+                ];
+                let valores = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+                for (let i = 0; i < dados.length; i++){
+                    let mes = dados[i].mes;
+                    valores[mes - 1] = dados[i].quantidade;
+                }
+
+                graficoLinhaChart = new Chart(graficoLinha, {
+
+                type: 'line',
+                options: {
+                    responsive: true,
+                    fill: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    }
+                },
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Momentos',
+                        data: valores,
+                        backgroundColor: '#8d568286',
+                        borderColor: '#8d5682',
+                        pointHoverRadius: 10,
+                        pointStyle: 'rectRot',
+                        borderWidth: 1
+                    }]
+                }
+            });
+
+        });
+
+    }
+
+    function atualizarGraficoLinha(){
+        fetch(`/graficos/crescimento/${usuario_id}`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                let labels = [
+                    'Jan',
+                    'Fev',
+                    'Mar',
+                    'Abr',
+                    'Mai',
+                    'Jun',
+                    'Jul',
+                    'Ago',
+                    'Set',
+                    'Out',
+                    'Nov',
+                    'Dez'
+                ];
+                let valores = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+                for (let i = 0; i < dados.length; i++){
+                    let mes = dados[i].mes;
+                    valores[mes - 1] = dados[i].quantidade;
+                }
+
+                graficoLinhaChart.data.labels = labels;
+                graficoLinhaChart.data.datasets[0].data = valores;
+
+                graficoLinhaChart.update();
+            });
+    }
+
+    let graficoRoscaChart;
+
+    function carregarGraficoRosca(){
+        fetch(`/graficos/midias/${usuario_id}`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                let musica = dados[0].musica;
+                let imagem = dados[0].imagem;
+
+                graficoRoscaChart = new Chart(graficoRosca, {
+                    type: 'doughnut',
+
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    },
+                    data: {
+                        labels: ['Músicas', 'Imagens'],
+                        datasets: [{
+                            data: [musica, imagem],
+                            backgroundColor: [
+                            '#8d5682c9',
+                            '#d9bfd3a0'
+                        ],
+                        borderColor: '#8d5682',
+                        borderWidth: 1
+                        }]
+                    }
+                });
+            });
+    }
+
+    function atualizarGraficoRosca(){
+        fetch(`/graficos/midias/${usuario_id}`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                let musica = dados[0].musica;
+                let imagem = dados[0].imagem;
+
+                graficoRoscaChart.data.datasets[0].data = [
+                    musica,
+                    imagem
+                ];
+
+                graficoRoscaChart.update();
+            })
+
+    }
 
 </script>

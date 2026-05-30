@@ -9,7 +9,7 @@ function cadastrar(req, res) {
     var favoritar = req.body.favoritar;
     var usuario_id = req.body.usuario_id;
 
-     const imagem =
+    const imagem =
         req.files["imagem"]
         ? req.files["imagem"][0].filename
         : null;
@@ -42,7 +42,7 @@ function cadastrar(req, res) {
 }
 
 function listar(req, res) {
-    var usuario_id = req.query.usuario_id;
+    var usuario_id = req.params.usuario_id;
 
     console.log("usuario_id recebido: ", usuario_id);
 
@@ -76,7 +76,7 @@ function editar(req, res) {
     const descricao = req.body.descricao;
     const favoritar = req.body.favoritar;
 
-     const imagem =
+    const imagem =
         req.files["imagem"]
         ? req.files["imagem"][0].filename
         : null;

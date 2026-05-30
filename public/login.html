@@ -82,11 +82,13 @@
             .then(function(resposta){
                 if (resposta.ok) {
                 resposta.json().then(function(dados) {
+                    console.log(dados);
                     mensagem = `<p class="exibir sucesso">Login confirmado!</p>`;
                 exibir.innerHTML = mensagem;
 
                 // Salvando Usuário
                 sessionStorage.ID_USUARIO = dados.id;
+                sessionStorage.NOME_USUARIO = dados.usuario_nome;
 
                 setTimeout(() => {
                     window.location.href = "galeria.html";

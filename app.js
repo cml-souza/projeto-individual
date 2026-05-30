@@ -20,6 +20,7 @@ var momentosRouter = require("./src/routes/momentos");
 var usuariosRouter = require("./src/routes/usuarios");
 var kpiRouter = require("./src/routes/kpis");
 var graficosRouter = require("./src/routes/graficos");
+var favoritosRouter = require("./src/routes/favoritos");
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -30,6 +31,7 @@ app.use(cors());
 
 app.use("/", indexRouter);
 app.use("/momentos", momentosRouter);
+app.use("/favoritos", favoritosRouter);
 app.use("/usuarios", usuariosRouter);
 app.use("/kpi", kpiRouter);
 app.use("/graficos", graficosRouter);

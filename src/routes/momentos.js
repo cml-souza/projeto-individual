@@ -1,4 +1,3 @@
-// Criando configs
 var express = require("express");
 var router = express.Router();
 var upload = require("../config/configUpload");
@@ -6,7 +5,7 @@ var momentoController = require("../controllers/momentoController");
 
 // POST - Subir Momento
 router.post(
-    "/cadastrar",
+    "/cadastrar/:usuario_id",
     upload.fields([
     { name: "imagem", maxCount: 1 },
     { name: "musica", maxCount: 1 }
@@ -17,7 +16,7 @@ router.post(
 
 // GET - Listar Momento
 router.get(
-    "/listar", function (req, res) {
+    "/listar/:usuario_id", function (req, res) {
     momentoController.listar(req, res);
 });
 
