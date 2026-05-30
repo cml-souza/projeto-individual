@@ -31,13 +31,13 @@
                             <input type="text" id="ipt_nome" placeholder="Nome">
                         </div>
                         <div class="input-c">
-                            <input type="text" id="ipt_email" placeholder="E-mail">
+                            <input type="text" id="ipt_email" placeholder="E-mail" oninput="validarEmail()">
                         </div>
                         <div class="input-c">
-                            <input type="password" id="ipt_senha" placeholder="Senha">
+                            <input type="password" id="ipt_senha" placeholder="Senha" oninput="validarSenha()">
                         </div>
                         <div class="input-c">
-                            <input type="password" id="ipt_conf_senha" placeholder="Confirme sua senha">
+                            <input type="password" id="ipt_conf_senha" placeholder="Confirme sua senha" oninput="validarConfirmacao()">
                         </div>
                         <div class="c-button">
                             <button onclick="cadastrar()">Cadastrar</button>
@@ -53,6 +53,48 @@
 </html>
 <script>
 
+    function validarEmail(){
+        let email = ipt_email.value;
+        if (!email.includes('.com') || !email.includes('@')) {
+            mensagem = `<p class="exibir erro">O Email deve conter "@" e ".com"</p>`;
+            exibir.innerHTML = mensagem;
+        } else {
+            exibir.innerHTML = "";
+        }
+        
+    }
+
+    function validarSenha(){
+            let tamanhoSenha = ipt_senha.value.length;
+
+            if (tamanhoSenha < 5){
+                mensagem = `<p class="exibir erro">Senha Fraca! <br>
+                Sua senha deve ter no mínimo 5 caracteres <br>
+                (contagem de caracteres: ${tamanhoSenha}) </p>`;
+                exibir.innerHTML = mensagem;
+            } else if (tamanhoSenha >= 5 && tamanhoSenha < 8){
+                mensagem = `<p class="exibir neutro">Senha Mediana. <br>
+                Uma senha ideal possui 8 caracteres ou mais <br>
+                (contagem de caracteres: ${tamanhoSenha}) </p>`;
+                exibir.innerHTML = mensagem;
+            } else if (tamanhoSenha >= 8){
+                mensagem = `<p class="exibir sucesso">Senha Forte! <br>
+                (contagem de caracteres: ${tamanhoSenha}) </p>`;
+                exibir.innerHTML = mensagem;
+            }
+        }
+
+        function validarConfirmacao(){
+            let senha = ipt_senha.value;
+            let confSenha = ipt_conf_senha.value;
+            if (confSenha != senha){
+            mensagem = `<p class="exibir erro">Os campos de senha devem ser iguais.</p>`;
+            exibir.innerHTML = mensagem;
+            } else {
+                exibir.innerHTML = "";
+            }
+        }
+
     function cadastrar() {
         let nome = ipt_nome.value;
         let email = ipt_email.value;
@@ -65,13 +107,17 @@
             mensagem = `<p class="exibir erro">Por favor, preencha todos os campos!</p>`;
             exibir.innerHTML = mensagem;
             return;
-        } if (!email.includes('.com') || !email.includes('@')) {
-            mensagem = `<p class="exibir erro">O Email deve conter "@" e ".com"</p>`;
-            exibir.innerHTML = mensagem;
+        }
+
+        if (!email.includes('.com') || !email.includes('@')) {
             return;
-        } if (confSenha != senha){
-            mensagem = `<p class="exibir erro">Os campos de senha devem ser iguais.</p>`;
-            exibir.innerHTML = mensagem;
+        }
+
+        if (senha.length < 5) {
+            return;
+        }
+
+        if (confSenha != senha) {
             return;
         }
 
