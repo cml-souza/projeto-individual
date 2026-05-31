@@ -46,10 +46,10 @@
 
             <input type="text" id="titulo" placeholder="Título">
 
-            <label for="imagem">Upload a Moment</label>
+            <label for="imagem">Carregue um Momento!</label>
             <input type="file" id="imagem" accept="image/*">
 
-            <label for="musica">Upload a song!</label>
+            <label for="musica">Carregue uma Melodia!</label>
             <input type="file" id="musica" accept=".mp3,audio/mpeg">
 
             <textarea id="descricao" placeholder="Descrição"></textarea>
@@ -157,6 +157,53 @@
             favoritar,
             musica,
             musicaUrl) {
+            let nomeMusica = "Sem música";
+
+            if (musica) {
+                nomeMusica = musica
+                    .replace(".mp3", "")
+                    .replace(/^\d+-/, "")
+                    .replaceAll("-", " ")
+                    .replaceAll("_", " ");
+            }
+
+            let musicaHTML = "";
+
+            if (musicaUrl) {
+                musicaHTML = `
+                <div class="musica-box">
+                    <button class="btn-play" onclick="tocarMusica(${id})">
+                        ▶
+                    </button>
+
+                    <span>${nomeMusica}</span>
+
+                    <audio id="audio-${id}">
+                        <source
+                            src="${musicaUrl}"
+                            type="audio/mpeg"
+                        >
+                    </audio>
+                </div>
+                `;
+            }
+
+            let favoritoHTML = "";
+
+            if (favoritar) {
+                favoritoHTML = `
+                <p style="color: gold; text-align: center;">
+                    Favoritar ⭐
+                </p>
+                `;
+            } else {
+                favoritoHTML = `
+                <p style="color: silver; text-align: center;">
+                    Favoritar ☆
+                </p>
+                `;
+            }
+
             return `
         <div class="card">
 
@@ -164,36 +211,11 @@
 
             <img src="${imagem}">
 
-            ${musicaUrl ? `
-        <div class="musica-box">
-
-            <button class="btn-play" onclick="tocarMusica(${id})">
-                ▶
-            </button>
-            <span>
-                ${
-                musica
-                ? musica
-                .replace(".mp3", "")
-                .replace(/^\d+-/, "")
-                .replaceAll("-", " ")
-                .replaceAll("_", " ")
-                : "Sem música"
-                }
-            </span>
-            <audio id="audio-${id}">
-                <source
-                    src="${musicaUrl}"
-                    type="audio/mpeg"
-                >
-            </audio>
-
-        </div>
-        ` : ""}
+            ${musicaHTML}
 
             <p style="padding: 0 10px;">${descricao}</p>
 
-            ${favoritar ? "<p style='color: gold; text-align: center;'>Favoritar ⭐</p>" : "<p style='color: silver; text-align: center;'>Favoritar ☆"}    
+            ${favoritoHTML}    
 
         <div class="acoes">
             <button onclick="editarMomento(${id})">
@@ -311,9 +333,11 @@
 
             const musica = document.getElementById("musica");
 
-            const arquivoMusica = musica 
-            ? musica.files[0] :
-            null;
+            let arquivoMusica = null;
+
+            if (musica) {
+                arquivoMusica = musica.files[0];
+            }
 
             // Validando preenchimento de campos
             if (!titulo && !arquivo) {
@@ -321,15 +345,19 @@
                 return;
             }
 
+            let valorFavorito = 0;
+
+            if (favoritar) {
+                valorFavorito = 1;
+            }
+
             const formData = new FormData();
             formData.append("usuario_id", usuarioId);
             formData.append("titulo", titulo);
             formData.append("imagem", arquivo);
             formData.append("descricao", descricao);
-            formData.append("favoritar", favoritar ? 1 : 0);
+            formData.append("favoritar", valorFavorito);
             formData.append("musica", arquivoMusica);
-
-            let req;
 
             if (idEditando) {
             fetch(`/momentos/editar/${idEditando}`,
@@ -357,8 +385,8 @@
             console.log(erro);
         });
         } else {
-            req = fetch(
-                `/momentos/cadastrar`,
+            fetch(
+                `/momentos/cadastrar/${usuarioId}`,
                 {
                     method: "POST",
                     body: formData

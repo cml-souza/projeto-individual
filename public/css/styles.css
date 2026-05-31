@@ -320,10 +320,10 @@ body {
 }
 
 .content-ch {
-    height: 100vh;
+    height: 70vh;
     display: flex;
     justify-content: space-around;
-    margin-top: 100px;
+    margin-top: 150px;
 }
 
 .text-ch {
